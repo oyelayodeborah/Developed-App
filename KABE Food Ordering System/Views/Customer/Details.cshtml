@@ -1,0 +1,52 @@
+﻿@model KABE_Food_Ordering_System.Models.Customer
+@using KABE_Food_Ordering_System.Logic;
+@using KABE_Food_Ordering_System.Models;
+
+@{
+    ViewBag.Title = "View Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    BaseLogic<Location> locationLogic = new BaseLogic<Location>(new ApplicationDbContext());
+    var getLocation = locationLogic.Get(Model.LocationId);
+}
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationId)
+        </dt>
+        <dd>
+            @getLocation.Name
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+    </dl>
+
+
+
+    @*<p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>*@
+</div>

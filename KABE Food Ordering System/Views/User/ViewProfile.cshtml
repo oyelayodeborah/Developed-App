@@ -1,0 +1,101 @@
+﻿@model IEnumerable<KABE_Food_Ordering_System.Models.User>
+
+@{
+    ViewBag.Title = "View Profile";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    @{ 
+        var Id = Convert.ToInt32((Session["Id"]));
+        var findUser = new KABE_Food_Ordering_System.Logic.UserLogic().Get(Id);
+    }
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+        <dd>
+            @findUser.Name
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @findUser.Email
+        </dd>
+
+        @{
+
+
+            if (Session["Role"].ToString() == "Restaurant")
+            {
+                var restlocation = new KABE_Food_Ordering_System.Logic.RestaurantLogic().GetByUserID(Id);
+                var getrestLocation = new KABE_Food_Ordering_System.Logic.LocationLogic().Get(restlocation.LocationId);
+                <dt>
+                    Location
+                </dt>
+                <dd>
+                    @{ var State = getrestLocation.State.ToString();
+
+                    }
+                    @restlocation.ResidentialAddress
+                    <label> , </label>
+                    @getrestLocation.Name
+                    &nbsp;
+                    @State
+                </dd>
+            }
+
+        }
+        @{
+
+
+            if (Session["Role"].ToString() == "Customer")
+            {
+                var custlocation = new KABE_Food_Ordering_System.Logic.CustomerLogic().GetByUserID(Id);
+                var getcustLocation = new KABE_Food_Ordering_System.Logic.LocationLogic().Get(custlocation.LocationId);
+                <dt>
+                    Location
+                </dt>
+                <dd>
+                    @{ var custState = getcustLocation.State.ToString();
+
+                    }
+                    @custlocation.ResidentialAddress
+                    <label> , </label>
+                    @getcustLocation.Name
+                    &nbsp;
+                    @custState
+                </dd>
+            }
+
+        }
+        <dt>
+            Status
+        </dt>
+        <dd>
+            @findUser.Status
+        </dd>
+        <dt>
+            LastLoggedIn
+        </dt>
+        <dd>
+            @findUser.LastLoggedIn
+        </dd>
+        <dt>
+            LastLoggedOut
+        </dt>
+        <dd>
+            @findUser.LastLoggedOut
+        </dd>
+        <dt>
+            DateCreated
+        </dt>
+        <dd>
+            @findUser.DateCreated
+        </dd>
+    </dl>
+
+
+</div>
+

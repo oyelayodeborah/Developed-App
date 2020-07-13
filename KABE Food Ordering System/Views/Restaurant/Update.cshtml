@@ -1,0 +1,92 @@
+﻿@model KABE_Food_Ordering_System.Models.Restaurant
+@{
+    ViewBag.Title = "Update Your Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="col-md-6">
+    @if (ViewBag.Message != null)
+    {
+        if (ViewBag.Message == "Success")
+        {
+            <div class="alert alert-success">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+        else if (ViewBag.Message == "Exist")
+        {
+            <div class="alert alert-error">
+                <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+        else if (ViewBag.Message == "Error")
+        {
+            <div class="alert alert-error">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+    }
+   
+
+    <div class="form-group ">
+        @Html.LabelFor(m => m.About)
+        @Html.TextAreaFor(m => m.About, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 3, required = "required" })
+        @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group ">
+        @Html.LabelFor(m => m.ResidentialAddress)
+        @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 255, minlength = 5, required = "required" })
+        @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LocationId)
+        @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
+        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group ">
+        @Html.LabelFor(m => m.PhoneNumber)
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", maxlength = 11, pattern = "0\\d+$", @type = "phone", minlength = 11 })
+        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group ">
+        @Html.LabelFor(m => m.EstablishmentDate)
+        @Html.TextBoxFor(m => m.EstablishmentDate, new { @class = "form-control", type = "date", required = "required" })
+        @Html.ValidationMessageFor(model => model.EstablishmentDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+            <input type="submit" value="SUBMIT" class="btn btn-default" />&emsp;&emsp;
+
+        </div>
+    </div>
+
+
+}
+
+
+
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+    </script>
+}

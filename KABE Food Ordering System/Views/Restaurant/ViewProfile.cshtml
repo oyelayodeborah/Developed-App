@@ -1,0 +1,94 @@
+﻿@model KABE_Food_Ordering_System.Models.Restaurant
+@using KABE_Food_Ordering_System.Logic;
+@using KABE_Food_Ordering_System.Models;
+
+@{
+    ViewBag.Title = "View Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    BaseLogic<Location> locationLogic = new BaseLogic<Location>(new ApplicationDbContext());
+    var getLocation = locationLogic.Get(Model.LocationId);
+}
+<div>
+    <dl class="dl-horizontal">
+        @{
+            if (Model.SmallThumbnailjpg != "" || Model.SmallThumbnailjpg != null)
+            {
+               
+                <dt>
+                    @{
+                        var getImage = Model.SmallThumbnailpng;
+                        //var getImage = @item.SmallThumbnailjpg;
+                    }
+                    @*<img src="data:image/png;base64,@getImage" alt="@Model.Name" />*@
+                    <img src="data:image/jpg;base64,@getImage" alt="@Model.Name" style="width:100px; height:100px;" />
+
+                </dt>
+                <dd></dd>
+            }
+            else if (Model.SmallThumbnailpng != "" || Model.SmallThumbnailpng != null)
+            {
+                
+                <dt>
+
+                    @{
+                        var getImagepng = Model.SmallThumbnailpng;
+                        //var getImage = @item.SmallThumbnailjpg;
+                    }
+                    <img src="data:image/png;base64,@getImagepng" alt="@Model.Name"style="width:100px; height:100px;" />
+                    @*<img src="data:image/jpg;base64,@getImage" alt="@item.Name"/>*@
+                </dt>
+                <dd></dd>
+            }
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidentialAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidentialAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationId)
+        </dt>
+        <dd>
+            @getLocation.Name
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EstablishmentDate)
+
+        </dt>
+        @{
+            string values = Model.EstablishmentDate.Date + "/" + Model.EstablishmentDate.Month + "/" + Model.EstablishmentDate.Year;
+        <dd>
+            @values
+        </dd>
+        }
+        
+
+    </dl>
+
+
+
+    @*<p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>*@
+</div>

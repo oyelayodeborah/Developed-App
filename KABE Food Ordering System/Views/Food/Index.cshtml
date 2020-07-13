@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "View Foods";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@if (ViewBag.Message != null)
+{
+    if (ViewBag.Message == "Success")
+    {
+        <div class="alert alert-success">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Exist")
+    {
+        <div class="alert alert-error">
+            <p>Branch Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Error")
+    {
+        <div class="alert alert-error">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+}
+
+@if (ViewBag.Results == null)
+{
+    <h4><strong>You have added any food yet</strong></h4>
+}
+else if (ViewBag.Results != null)
+{
+    <h3>Total Items: @ViewBag.TotalItems</h3>
+
+    <table class="table">
+        <tr>
+            <th>&nbsp;</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in ViewBag.Results)
+        {
+            <tr>
+                <td>
+                    @{
+                        var getImage = item.Image;
+                        //var getImage = @item.SmallThumbnailjpg;
+                    }
+                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:120px; height:100px;" />
+                </td>
+                <td>
+                    <h3> <strong>@item.Name</strong></h3>
+                    
+                </td>
+
+                <td>
+                    <h4>
+                        <strong>
+                            N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                        </strong>
+                    </h4>
+                    @*<button>
+
+                        <a href=@Url.Action("New", new {foodId=item.Id, restaurant=item.RestaurantName, price=item.Price})>Change Price</a>
+
+                    </button>*@
+                </td>
+            </tr>
+        }
+
+
+    </table>
+}
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}

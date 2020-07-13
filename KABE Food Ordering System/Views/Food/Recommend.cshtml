@@ -1,0 +1,39 @@
+﻿@model IEnumerable<KABE_Food_Ordering_System.Models.Food>
+
+@{
+    ViewBag.Title = "Recommended Food";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Order Food", "New","Order")
+</p>
+<h3>
+    The recommended food is <strong>@ViewBag.Food</strong>
+</h3>
+<p>
+    <code>These are the list of restaurants where you can get this food</code>
+    @foreach (var item in ViewBag.Restaurants)
+    {
+        <ul>
+            <li>
+                @item
+            </li>
+        </ul>
+    }
+
+</p>
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}

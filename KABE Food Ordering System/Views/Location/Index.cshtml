@@ -1,0 +1,87 @@
+﻿@model IEnumerable<KABE_Food_Ordering_System.Models.Location>
+
+@{
+    ViewBag.Title = "View All Locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Message != null)
+{
+    if (ViewBag.Message == "Success")
+    {
+        <div class="alert alert-success">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Exist")
+    {
+        <div class="alert alert-error">
+            <p>Branch Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Error")
+    {
+        <div class="alert alert-error">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+}
+<p>
+    @Html.ActionLink("Add new Location", "New")
+</p>
+<table  class="table table-bordered table-striped table-hover table-responsive table-condensed" id="customers">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+
+</table>
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}

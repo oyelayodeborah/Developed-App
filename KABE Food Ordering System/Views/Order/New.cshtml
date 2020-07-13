@@ -1,0 +1,127 @@
+﻿@model KABE_Food_Ordering_System.Models.Order
+@{
+    ViewBag.Title = "Place Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CustomerId)
+    @Html.HiddenFor(model => model.RestaurantId)
+    @Html.HiddenFor(model => model.TransactionReference)
+    @Html.HiddenFor(model => model.Amount)
+
+    <div class="col-md-6">
+        @if (ViewBag.Message != null)
+        {
+            if (ViewBag.Message == "Success")
+            {
+                <div class="alert alert-success">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Exist")
+            {
+                <div class="alert alert-error">
+                    <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Error")
+            {
+                <div class="alert alert-error">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (ViewBag.Data != null)
+        {
+            var item = ViewBag.Data;
+
+            <div class="form-group">
+                @{
+
+                    var getImage = item.Image;
+                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:150px; height:75px;" />
+
+                }
+            </div>
+            <div class="form-group">
+                <h3> <strong>@item.Name</strong></h3>
+
+            </div>
+            <div class="form-group">
+                <h4><strong>@item.RestaurantName</strong></h4>
+            </div>
+            <div class="form-group">
+
+                <h4> <strong id="Price"> Price: N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</strong></h4>
+            </div>
+            
+        }
+        <div class="form-group ">
+            @Html.LabelFor(m => m.FoodQuantity)
+            @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, required = "required", pattern= "\\d+$" })
+            @Html.ValidationMessageFor(model => model.FoodQuantity, "", new { @class = "text-danger" })
+
+        </div>
+        <div class="form-group ">
+            @Html.LabelFor(m => m.ResidentialAddress)
+            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, required = "required"})
+            @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+
+        </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LocationId)
+        @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
+        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+    </div>
+        <div class="form-group">
+            <h4 ><strong id="Total">Total: N 0.00</strong></h4>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit" value="SUBMIT" class="btn btn-default" name="sub" id="submit" />&emsp;&emsp;
+
+            </div>
+        </div>
+    </div>
+}
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+        var multiply = 0;
+        var price = $('#Amount').val();
+        var total = $('#Total').val();
+        $('#FoodQuantity').keyup(function () {
+            var quantity = $(this).val();
+            multiply = quantity * price;
+            $("#Total").html("Total: N" + multiply + ".00");
+            $("#Amount").val(multiply);
+
+        })
+        if ($('#FoodQuantity') != "" && total == "Total: N 0.00") {
+            $('#FoodQuantity').val("0");
+        }
+        
+
+    </script>
+
+}

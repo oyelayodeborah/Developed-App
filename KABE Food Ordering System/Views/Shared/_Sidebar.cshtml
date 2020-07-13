@@ -1,0 +1,280 @@
+﻿@using WebHelpers.Mvc5
+@using KABE_Food_Ordering_System.Models
+@using KABE_Food_Ordering_System.Logic
+<aside class="main-sidebar" style="width:260px">
+    <section class="sidebar">
+        @* BEGIN Search *@
+        <br />
+        <a href="@Url.Action("Index", "Home")" class="logo">
+            @* Mini logo for sidebar 50x50 pixels *@
+            <span class="logo-mini"></span>
+            @* Logo for regular state and mobile devices *@
+            <span class="logo-lg align-content-center">
+                <img src="~/Content/img/user1.png" class="img-circle" style="height:60px; width:60px;" alt="User Image">
+
+                @if (Session["id"] != null)
+                {
+                    <label style="color:white" class="text-center">Hello  @Session["username"]</label>
+                }
+            </span>
+        </a>
+
+        <br />
+
+        @*<form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>*@
+        @* END Search *@
+        @* BEGIN Menu *@
+        <ul class="sidebar-menu" data-widget="tree">
+            @*<li class="header fa fa-dashboard" style:"font-size:16px">&nbsp;&emsp; Dashboard &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</li>*@
+            <br />
+            <br />
+            <li class="@Url.IsLinkActive("Index", "Home")">
+                <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> <span>Home</span></a>
+            </li>
+            @*<li class="@Url.IsLinkActive("Index", "Home")">
+            <a href="@Url.Action("Index", "Home")"><i class="fa fa-link"></i> <span>Home</span></a>
+        </li>*@
+            @*<li class="@Url.IsLinkActive("AnotherLink", "Home")">
+            <a href="@Url.Action("AnotherLink", "Home")"><i class="fa fa-link"></i> <span>Another Link</span></a>
+        </li>*@
+            @if (Convert.ToString(Session["role"]) == "Admin")
+            {
+                <li class="treeview">
+                    <a href="#">
+                        <i class="glyphicon glyphicon-map-marker"></i> <span>Location</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@Url.IsLinkActive("New", "Location")">
+                            <a href="@Url.Action("New", "Location")"><i class="fa fa-link"></i> <span>Add New Location</span></a>
+                        </li>
+                        <li class="@Url.IsLinkActive("Index", "Location")">
+                            <a href="@Url.Action("Index", "Location")"><i class="fa fa-link"></i> <span>View Locations</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-link"></i> <span>Role</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@Url.IsLinkActive("New", "Role")">
+                            <a href="@Url.Action("New", "Role")"><i class="fa fa-link"></i> <span>Add New Role</span></a>
+                        </li>
+                        <li class="@Url.IsLinkActive("Index", "Role")">
+                            <a href="@Url.Action("Index", "Role")"><i class="fa fa-link"></i> <span>View Roles</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+                {
+                    BaseLogic<Role> roleLogic = new BaseLogic<Role>(new ApplicationDbContext());
+                    BaseLogic<Location> locationLogic = new BaseLogic<Location>(new ApplicationDbContext());
+
+
+                    if (locationLogic.GetAll().Count() != 0 && roleLogic.GetAll().Count() != 0)
+                    {
+
+
+                        <li class="@Url.IsLinkActive("SendCredential", "Account")">
+                            <a href="@Url.Action("SendCredential", "Account")"><i class="fa fa-link"></i> <span>Send Credential</span></a>
+                        </li>
+                        <li class="@Url.IsLinkActive("ViewProfile", "User")">
+                            <a href="@Url.Action("ViewProfile", "User")"><i class="fa fa-link"></i> <span>View Profile</span></a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Customer</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("Index", "Customer")">
+                                    <a href="@Url.Action("Index", "Customer")"><i class="fa fa-link"></i> <span>View Customers</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Restaurant</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("Index", "Restaurant")">
+                                    <a href="@Url.Action("Index", "Restaurant")"><i class="fa fa-link"></i> <span>View Restaurants</span></a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Order</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("Index", "Order")">
+                                    <a href="@Url.Action("Index", "Order")"><i class="fa fa-link"></i> <span>View Orders</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="@Url.IsLinkActive("ChangePassword", "User")">
+                            <a href="@Url.Action("ChangePassword", "User")"><i class="fa fa-link"></i> <span>Change Your Password</span></a>
+                        </li>
+                        <li class="@Url.IsLinkActive("ChangeUserPassword", "Account")">
+                            <a href="@Url.Action("ChangeUserPassword", "Account")"><i class="fa fa-link"></i> <span>Change Other Users Password</span></a>
+                        </li>
+
+                    }
+                }
+            }
+            else if (Convert.ToString(Session["role"]) == "Restaurant")
+            {
+                <li class="@Url.IsLinkActive("Register", "Restaurant")">
+
+                    @if (Convert.ToString(Session["Status"]) == "ProfileNotCreated")
+                    {
+                        <a href="@Url.Action("Register", "Restaurant")">
+                            <i class="fa fa-link"></i>
+                            <span>Register as a Restaurant</span>
+                        </a>
+                    }
+
+
+                </li>
+                if (Convert.ToString(Session["Status"]) != "ProfileNotCreated")
+                {
+                    <li class="@Url.IsLinkActive("Update", "Restaurant")">
+                        <a href="@Url.Action("Update", "Restaurant")">
+                            <i class="fa fa-link"></i>
+                            <span>Update Profile</span>
+                        </a>
+                    </li>
+
+                    <li class="@Url.IsLinkActive("ChangePassword", "User")">
+                        <a href="@Url.Action("ChangePassword", "User")"><i class="fa fa-link"></i> <span> Change Your Password</span></a>
+                    </li>
+                    if (Convert.ToString(Session["Status"]) != "ChangePassword")
+                    {
+                        <li class="@Url.IsLinkActive("ViewProfile", "Restaurant")">
+                            <a href="@Url.Action("ViewProfile", "Restaurant")"><i class="fa fa-link"></i> <span>View Profile</span></a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Order</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("ViewAll", "Order")">
+                                    <a href="@Url.Action("ViewAll", "Order")"><i class="fa fa-link"></i> <span>View All Orders</span></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Food</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("Add", "Food")">
+                                    <a href="@Url.Action("Add", "Food")"><i class="fa fa-link"></i> <span>Add Food</span></a>
+                                </li>
+                                <li class="@Url.IsLinkActive("Index", "Food")">
+                                    <a href="@Url.Action("Index", "Food")"><i class="fa fa-link"></i> <span>View Foods</span></a>
+                                </li>
+                            </ul>
+
+                        </li>
+                    }
+                }
+            }
+            else if (Convert.ToString(Session["role"]) == "Customer")
+            {
+                <li class="@Url.IsLinkActive("Register", "Customer")">
+
+                    @if (Convert.ToString(Session["Status"]) == "ProfileNotCreated")
+                    {
+                        <a href="@Url.Action("Register", "Customer")">
+                            <i class="fa fa-link"></i>
+                            <span>Register as a Customer</span>
+                        </a>
+                    }
+
+
+                </li>
+                if (Convert.ToString(Session["Status"]) != "ProfileNotCreated")
+                {
+                    <li class="@Url.IsLinkActive("Update", "Customer")">
+
+                        <a href="@Url.Action("Update", "Customer")">
+                            <i class="fa fa-link"></i>
+                            <span>Update Profile</span>
+                        </a>
+                    </li>
+
+                    <li class="@Url.IsLinkActive("ChangePassword", "User")">
+                        <a href="@Url.Action("ChangePassword", "User")"><i class="fa fa-link"></i> <span> Change Your Password</span></a>
+                    </li>
+                    if (Convert.ToString(Session["Status"]) != "ChangePassword")
+                    {
+                        <li class="@Url.IsLinkActive("ViewProfile", "Customer")">
+                            <a href="@Url.Action("ViewProfile", "Customer")"><i class="fa fa-link"></i> <span>View Profile</span></a>
+                        </li>
+
+                        <li class="@Url.IsLinkActive("CheckRecommendedFood", "Customer")">
+                            <a href="@Url.Action("CheckRecommendedFood", "Customer")"><i class="fa fa-link"></i> <span>Check Recommended Food</span></a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-map-marker"></i> <span>Order</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@Url.IsLinkActive("Search", "Order")">
+                                    <a href="@Url.Action("Search", "Order")"><i class="fa fa-link"></i> <span>Make Search</span></a>
+                                </li>
+                                @*<li class="@Url.IsLinkActive("New", "Order")">
+                                <a href="@Url.Action("New", "Order")"><i class="fa fa-link"></i> <span>Place Order</span></a>
+                            </li>*@
+                                <li class="@Url.IsLinkActive("All", "Order")">
+                                    <a href="@Url.Action("All", "Order")"><i class="fa fa-link"></i> <span>View Orders</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                }
+            }
+
+
+
+        </ul>
+        @* END Menu *@
+    </section>
+</aside>

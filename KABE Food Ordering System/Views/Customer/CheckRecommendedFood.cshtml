@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Check Recommended Food";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Results == null)
+{
+    <h4><strong>No Recommended Food yet.</strong></h4>
+}
+else if (ViewBag.Results != null)
+{
+
+    <table class="table">
+        <tr>
+            <th>&nbsp;</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in ViewBag.Results)
+        {
+            <tr>
+                <td>
+                    @{
+                        var getImage = item.Image;
+                        //var getImage = @item.SmallThumbnailjpg;
+                    }
+                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:120px; height:100px;" />
+                </td>
+                <td>
+                    <h3> <strong>@item.Name</strong></h3>
+                </td>
+
+            </tr>
+        }
+
+
+    </table>
+}
+
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}

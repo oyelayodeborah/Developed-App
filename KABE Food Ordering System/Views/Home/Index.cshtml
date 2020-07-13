@@ -1,0 +1,276 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Index";
+    ViewBag.Description = "Home Page";
+}
+@if (ViewBag.Message != null)
+{
+    if (ViewBag.Message == "Success")
+    {
+        <div class="alert alert-success">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Exist")
+    {
+        <div class="alert alert-error">
+            <p>User Exist already <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+    else if (ViewBag.Message == "Error")
+    {
+        <div class="alert alert-error">
+            <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+        </div>
+
+    }
+}
+@{
+    var celebrationText = Session["celebrate"];
+    if (celebrationText != null)
+    {
+        <h4><strong style="color:red">@celebrationText</strong></h4>
+    }
+}
+@{
+    string role = Convert.ToString(Session["role"]);
+    if (role != null)
+    {
+        if (role != "Admin")
+        {
+            var getOrder = new List<KABE_Food_Ordering_System.Models.Order>();
+            int id = Convert.ToInt32(Session["id"]);
+            var count = 0;
+            if (role == "Restaurant")
+            {
+                getOrder = new KABE_Food_Ordering_System.Logic.OrderLogic().GetRestaurantOrders(id);
+                count = getOrder.Count();
+            }
+            else if (role == "Customer")
+            {
+                getOrder = new KABE_Food_Ordering_System.Logic.OrderLogic().GetCustomerOrders(id);
+                count = getOrder.Count();
+            }
+           
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3>@count</h3>
+
+                        <p>Total Order</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-adn"></i>
+                    </div>
+                    <a href="" class="small-box-footer"></a>
+
+                </div>
+            </div>
+            var successOrders = new List<KABE_Food_Ordering_System.Models.Order>();
+            var pendingOrders = new List<KABE_Food_Ordering_System.Models.Order>();
+            var cancelledOrders = new List<KABE_Food_Ordering_System.Models.Order>();
+            var NotPaidOrders = new List<KABE_Food_Ordering_System.Models.Order>();
+            var successOrdersCount = 0;
+            var pendingOrdersCount = 0;
+            var cancelledOrdersCount = 0;
+            var NotPaidOrdersCount = 0;
+            foreach (var success in getOrder)
+            {
+                if (success.Status == KABE_Food_Ordering_System.Models.OrderStatus.Delivered)
+                {
+                    successOrders.Add(new KABE_Food_Ordering_System.Models.Order
+                    {
+                        Id = success.Id,
+                        FoodId = success.FoodId,
+                        FoodQuantity = success.FoodQuantity,
+                        LocationId = success.LocationId,
+                        Status = success.Status,
+                        RestaurantId = success.RestaurantId,
+                        TransactionReference = success.TransactionReference,
+                        VerificationCode = success.VerificationCode,
+                        CustomerId = success.CustomerId,
+                        DeliveryDateTime = success.DeliveryDateTime,
+                        OrderDateTime = success.OrderDateTime,
+                        CardNumber = success.CardNumber,
+                        Amount = success.Amount,
+                        ResidentialAddress = success.ResidentialAddress
+                    });
+                }
+                else if (success.Status == KABE_Food_Ordering_System.Models.OrderStatus.Cancelled)
+                {
+                    cancelledOrders.Add(new KABE_Food_Ordering_System.Models.Order
+                    {
+                        Id = success.Id,
+                        FoodId = success.FoodId,
+                        FoodQuantity = success.FoodQuantity,
+                        LocationId = success.LocationId,
+                        Status = success.Status,
+                        RestaurantId = success.RestaurantId,
+                        TransactionReference = success.TransactionReference,
+                        VerificationCode = success.VerificationCode,
+                        CustomerId = success.CustomerId,
+                        DeliveryDateTime = success.DeliveryDateTime,
+                        OrderDateTime = success.OrderDateTime,
+                        CardNumber = success.CardNumber,
+                        Amount = success.Amount,
+                        ResidentialAddress = success.ResidentialAddress
+                    });
+                }
+
+                else if (success.Status == KABE_Food_Ordering_System.Models.OrderStatus.NotPaid)
+                {
+                    NotPaidOrders.Add(new KABE_Food_Ordering_System.Models.Order
+                    {
+                        Id = success.Id,
+                        FoodId = success.FoodId,
+                        FoodQuantity = success.FoodQuantity,
+                        LocationId = success.LocationId,
+                        Status = success.Status,
+                        RestaurantId = success.RestaurantId,
+                        TransactionReference = success.TransactionReference,
+                        VerificationCode = success.VerificationCode,
+                        CustomerId = success.CustomerId,
+                        DeliveryDateTime = success.DeliveryDateTime,
+                        OrderDateTime = success.OrderDateTime,
+                        CardNumber = success.CardNumber,
+                        Amount = success.Amount,
+                        ResidentialAddress = success.ResidentialAddress
+                    });
+                }
+                else if (success.Status == KABE_Food_Ordering_System.Models.OrderStatus.Pending)
+                {
+                    pendingOrders.Add(new KABE_Food_Ordering_System.Models.Order
+                    {
+                        Id = success.Id,
+                        FoodId = success.FoodId,
+                        FoodQuantity = success.FoodQuantity,
+                        LocationId = success.LocationId,
+                        Status = success.Status,
+                        RestaurantId = success.RestaurantId,
+                        TransactionReference = success.TransactionReference,
+                        VerificationCode = success.VerificationCode,
+                        CustomerId = success.CustomerId,
+                        DeliveryDateTime = success.DeliveryDateTime,
+                        OrderDateTime = success.OrderDateTime,
+                        CardNumber = success.CardNumber,
+                        Amount = success.Amount,
+                        ResidentialAddress = success.ResidentialAddress
+                    });
+                }
+            }
+            successOrdersCount = successOrders.Count;
+            NotPaidOrdersCount = NotPaidOrders.Count;
+            cancelledOrdersCount = cancelledOrders.Count;
+            pendingOrdersCount = pendingOrders.Count;
+ 
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green-gradient">
+                    <div class="inner">
+                        <h3>@successOrdersCount</h3>
+
+                        <p>Successful Transactions</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-address-card"></i>
+                    </div>
+                    <a href="" class="small-box-footer"></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-teal-gradient">
+                    <div class="inner">
+                        <h3>@pendingOrdersCount</h3>
+
+                        <p>Pending Transactions</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-address-card"></i>
+                    </div>
+                    <a href="" class="small-box-footer"></a>
+
+                </div>
+            </div>
+            if (role == "Customer")
+            {
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow-gradient">
+                        <div class="inner">
+                            <h3>@NotPaidOrdersCount</h3>
+
+                            <p>UnPaid Transactions</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-address-card"></i>
+                        </div>
+                        <a href="" class="small-box-footer"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red-gradient">
+                        <div class="inner">
+                            <h3>@cancelledOrdersCount</h3>
+
+                            <p>Cancelled Transactions</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-address-card"></i>
+                        </div>
+                        <a href="" class="small-box-footer"></a>
+                    </div>
+                </div>
+            }
+        }
+        else if(role == "Admin")
+        {
+            var getRestaurantCount = new KABE_Food_Ordering_System.Logic.RestaurantLogic().GetAll().Count();
+            var getCustomerCount = new KABE_Food_Ordering_System.Logic.CustomerLogic().GetAll().Count();
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-maroon">
+                    <div class="inner">
+                        <h3>@getRestaurantCount</h3>
+
+                        <p>Restaurant</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <a href="" class="small-box-footer"></a>
+                    @*<a href="@Html.Action("Create","GlCategory" )" class="small-box-footer">
+                             <i class="fa fa-arrow-circle-right"></i>
+                        </a>*@
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-light-blue-gradient">
+                    <div class="inner">
+                        <h3>@getCustomerCount</h3>
+
+                        <p>Customer</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <a href="" class="small-box-footer"></a>
+                    @*<a href="@Html.Action("Create","GlCategory" )" class="small-box-footer">
+                             <i class="fa fa-arrow-circle-right"></i>
+                        </a>*@
+                </div>
+            </div>
+        }
+
+    }
+
+}

@@ -1,0 +1,113 @@
+﻿@model IEnumerable<KABE_Food_Ordering_System.Models.Order>
+
+@{
+    ViewBag.Title = "View Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-bordered table-striped table-hover table-responsive table-condensed" id="customers">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionReference)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CardNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryDateTime)
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionReference)
+                </td>
+                <td>
+                    @{
+                        var getCustomer = new KABE_Food_Ordering_System.Logic.CustomerLogic().Get(Convert.ToInt32(item.CustomerId));
+                    }
+                    @getCustomer.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardNumber)
+                </td>
+                <td>
+                    @{
+                        var getFood = new KABE_Food_Ordering_System.Logic.FoodLogic().Get(Convert.ToInt32(item.FoodId));
+                    }
+                    @getFood.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoodQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @{
+                        var getRestaurant = new KABE_Food_Ordering_System.Logic.RestaurantLogic().Get(Convert.ToInt32(item.RestaurantId));
+                    }
+                    @getRestaurant.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @{
+                        var getLocation = new KABE_Food_Ordering_System.Logic.LocationLogic().Get(Convert.ToInt32(item.LocationId));
+                    }
+                    @getLocation.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDateTime)
+                </td>
+
+
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}

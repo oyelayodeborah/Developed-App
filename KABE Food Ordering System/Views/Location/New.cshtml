@@ -1,0 +1,75 @@
+﻿@model KABE_Food_Ordering_System.Models.Location
+@{
+    ViewBag.Title = "Add New Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="col-md-6">
+    @if (ViewBag.Message != null)
+    {
+        if (ViewBag.Message == "Success")
+        {
+            <div class="alert alert-success">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+        else if (ViewBag.Message == "Exist")
+        {
+            <div class="alert alert-error">
+                <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+        else if (ViewBag.Message == "Error")
+        {
+            <div class="alert alert-error">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+    }
+
+    <div class="form-group ">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.State)
+        @Html.DropDownListFor(m => m.State, new SelectList(Enum.GetNames(typeof(KABE_Food_Ordering_System.Models.State))), "Select a State", new { @class = "form-control", required = "required", @data_live_search = "true" })
+        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+        <span id="accTypeerror" class="text-red "></span>
+    </div>
+</div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+            <input type="submit" value="SUBMIT" class="btn btn-default" />&emsp;&emsp;
+
+        </div>
+    </div>
+
+
+}
+
+
+
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+    </script>
+}

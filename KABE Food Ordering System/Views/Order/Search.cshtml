@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="row">
+        <div class="col-md-4">@Html.TextBox("searchTerm", null, new { @class = "form-control" })</div>
+        <div class="col-md-8"><input type="submit" class="btn btn-primary" value="Search" /></div>
+    </div>
+}
+
+@if (ViewBag.Results == null)
+{
+    <h4><strong>No Results Available for your search</strong></h4>
+}
+else if (ViewBag.Results != null)
+{
+    <h3>Total Items: @ViewBag.TotalItems</h3>
+
+    <table class="table">
+        <tr>
+            <th>&nbsp;</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in ViewBag.Results)
+        {
+            <tr>
+                <td>
+                    @{
+                        var getImage = item.Image;
+                        //var getImage = @item.SmallThumbnailjpg;
+                    }
+                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:120px; height:100px;" />
+                </td>
+                <td>
+                    <h3> <strong>@item.Name</strong></h3>
+                    <h4><strong>@item.RestaurantName</strong></h4>
+                    <h5>@item.About</h5>
+                    <h5>Location: @item.Location</h5>
+                    <p>Opens: 8am-5pm Mon-Fri</p>
+                </td>
+
+                <td>
+                    <h4>
+                        <strong>
+                            N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                        </strong>
+                    </h4>
+                    <button>
+                        
+                        <a href=@Url.Action("New", new {foodId=item.Id, restaurant=item.RestaurantName, price=item.Price})>ORDER</a>
+
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+    </table>
+   }
+
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+        });
+        $("#customers").dataTable();
+
+    </script>
+
+}
