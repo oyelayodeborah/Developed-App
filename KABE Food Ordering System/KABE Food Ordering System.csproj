@@ -1467,6 +1467,7 @@
     <Content Include="Views\Customer\CheckRecommendedFood.cshtml" />
     <Content Include="Views\Customer\Update.cshtml" />
     <Content Include="Views\Restaurant\Update.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1508,6 +1509,10 @@
     <Compile Include="Migrations\202007101617005_UpdateDb5.cs" />
     <Compile Include="Migrations\202007101617005_UpdateDb5.designer.cs">
       <DependentUpon>202007101617005_UpdateDb5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007152039404_UpdateDb6.cs" />
+    <Compile Include="Migrations\202007152039404_UpdateDb6.designer.cs">
+      <DependentUpon>202007152039404_UpdateDb6.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FoodViewModels.cs" />
     <Compile Include="Logic\LocationLogic.cs" />
@@ -1573,6 +1578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007101617005_UpdateDb5.resx">
       <DependentUpon>202007101617005_UpdateDb5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007152039404_UpdateDb6.resx">
+      <DependentUpon>202007152039404_UpdateDb6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

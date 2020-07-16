@@ -25,8 +25,16 @@ namespace KABE_Food_Ordering_System.Controllers
         public ActionResult CheckRecommendedFood()
         {
             int id = Convert.ToInt32(Session["id"]);
-            var getRecommendedFood = customerLogic.SetRecommendedFood(id);
-            ViewBag.Results = getRecommendedFood;
+            User user = new UserLogic().Get(id);
+            var getRecommendedFood = customerLogic.SetRecommendedFood(id, user.LastLoggedIn);
+            if (getRecommendedFood.Count() == 0)
+            {
+                ViewBag.Results = null;
+            }
+            else
+            {
+                ViewBag.Results = getRecommendedFood;
+            }
             return View();
         }
         //GET: User/Create
@@ -36,8 +44,8 @@ namespace KABE_Food_Ordering_System.Controllers
             string status= Convert.ToString(Session["Status"]);
             string setStatus = Convert.ToString(Status.ProfileNotCreated);
             ApplicationDbContext _context = new ApplicationDbContext();
-            //if (status == setStatus )
-            //{
+            if (status == setStatus )
+            {
                 Customer customer = customerLogic.GetCustomerByEmail(Convert.ToString(Session["Email"]));
                 if (customer == null)
                 {
@@ -61,11 +69,11 @@ namespace KABE_Food_Ordering_System.Controllers
 
                 };
                 return View(model);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Update", "Customer");
-            //}
+            }
+            else
+            {
+                return RedirectToAction("Update", "Customer");
+            }
 
 
         }
@@ -104,7 +112,7 @@ namespace KABE_Food_Ordering_System.Controllers
 
                 ViewBag.Message = "Success";
 
-                return RedirectToAction("Register", "Customer");
+                return RedirectToAction("ChangePassword", "User");
                 //return View(model);
 
             }

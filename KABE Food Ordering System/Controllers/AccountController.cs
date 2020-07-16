@@ -112,7 +112,7 @@ namespace KABE_Food_Ordering_System.Controllers
                     ViewBag.Message = "Success";
                     //return RedirectToAction("Index","Home");
                     //return RedirectToAction("SendCredential", "Account");
-                    return View();
+                    return View("Index","Home");
 
                 }
                 else
@@ -192,20 +192,21 @@ namespace KABE_Food_Ordering_System.Controllers
                     if (getRole.Name == "Restaurant")
                     {
                         var getUserDetails = new RestaurantLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate);
+                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate, findEmailAndPassword.LastLoggedIn);
                     }
                     else if (getRole.Name == "Customer")
                     {
                         var getDetails = new CustomerLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth);
+                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth,findEmailAndPassword.LastLoggedIn);
                     }
 
                     //Updating the lastLoggedIn details
                     User updateUser = baseLogic.Get(findEmailAndPassword.Id);
+                    updateUser.LastLoggedIn = DateTime.Now;
+
                     if (findEmailAndPassword.Status==Status.InActive/*!= Status.ProfileNotCreated && findEmailAndPassword.Status != Status.ChangePassword*/)
                     {
                         updateUser.Status = Status.Active;
-                        updateUser.LastLoggedIn = DateTime.Now;
 
                         baseLogic.Update(updateUser);
 

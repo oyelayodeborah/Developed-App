@@ -3,81 +3,82 @@
     ViewBag.Title = "Register Your Restaurant";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<p>Please kindly complete your registration process, so that you can fully enjoy KABE</p>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-<div class="col-md-6">
-    @if (ViewBag.Message != null)
-    {
-        if (ViewBag.Message == "Success")
+    <div class="col-md-6">
+        @if (ViewBag.Message != null)
         {
-            <div class="alert alert-success">
-                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+            if (ViewBag.Message == "Success")
+            {
+                <div class="alert alert-success">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-            </div>
+                </div>
 
+            }
+            else if (ViewBag.Message == "Exist")
+            {
+                <div class="alert alert-error">
+                    <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Error")
+            {
+                <div class="alert alert-error">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
         }
-        else if (ViewBag.Message == "Exist")
-        {
-            <div class="alert alert-error">
-                <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+        @*@Html.HiddenFor(model => model.Id)*@
 
-            </div>
+        @*<div class="form-group ">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>*@
 
-        }
-        else if (ViewBag.Message == "Error")
-        {
-            <div class="alert alert-error">
-                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+        <div class="form-group ">
+            @Html.LabelFor(m => m.About)
+            @Html.TextAreaFor(m => m.About, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 3, required = "required" })
+            @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+        </div>
 
-            </div>
+        <div class="form-group ">
+            @Html.LabelFor(m => m.ResidentialAddress)
+            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 255, minlength = 5, required = "required" })
+            @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+        </div>
 
-        }
-    }
-    @*@Html.HiddenFor(model => model.Id)*@
+        @*<div class="form-group ">
+                @Html.LabelFor(m => m.Restaurants.SecretQuestions)
+                @Html.TextBoxFor(m => m.Restaurants.SecretQuestions, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
+                @Html.ValidationMessageFor(model => model.Restaurants.SecretQuestions, "", new { @class = "text-danger" })
+            </div>*@
 
-    @*<div class="form-group ">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
-        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-    </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId)
+            @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="form-group ">
-        @Html.LabelFor(m => m.About)
-        @Html.TextAreaFor(m => m.About, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 3, required = "required" })
-        @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+        <div class="form-group ">
+            @Html.LabelFor(m => m.PhoneNumber)
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", maxlength = 11, pattern = "0\\d+$", @type = "phone", minlength = 11 })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group ">
+            @Html.LabelFor(m => m.EstablishmentDate)
+            @Html.TextBoxFor(m => m.EstablishmentDate, new { @class = "form-control", type = "date", required = "required" })
+            @Html.ValidationMessageFor(model => model.EstablishmentDate, "", new { @class = "text-danger" })
+        </div>
     </div>
-
-    <div class="form-group ">
-        @Html.LabelFor(m => m.ResidentialAddress)
-        @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 255, minlength = 5, required = "required" })
-        @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
-    </div>
-
-    @*<div class="form-group ">
-            @Html.LabelFor(m => m.Restaurants.SecretQuestions)
-            @Html.TextBoxFor(m => m.Restaurants.SecretQuestions, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
-            @Html.ValidationMessageFor(model => model.Restaurants.SecretQuestions, "", new { @class = "text-danger" })
-        </div>*@
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.LocationId)
-        @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
-        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group ">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", maxlength = 11, pattern = "0\\d+$", @type = "phone", minlength = 11 })
-        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group ">
-        @Html.LabelFor(m => m.EstablishmentDate)
-        @Html.TextBoxFor(m => m.EstablishmentDate, new { @class = "form-control", type = "date", required = "required" })
-        @Html.ValidationMessageFor(model => model.EstablishmentDate, "", new { @class = "text-danger" })
-    </div>
-</div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
 

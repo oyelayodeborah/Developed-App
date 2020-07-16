@@ -22,127 +22,7 @@ namespace KABE_Food_Ordering_System.Logic
             var findDetails = _context.Restaurants.Where(a => a.Name == value).SingleOrDefault();
             return findDetails;
         }
-        public List<decimal> GetListRestaurantFoodsPrice()
-        {
-            var restaurant = _context.Restaurants.ToList();
-            List<decimal> getPrice = new List<decimal>();
-            var getAllPrice = new List<decimal>();
-            FoodViewModels getFood = new FoodViewModels();
-            if (restaurant != null)
-            {
-                foreach (var item in restaurant)
-                {
-                    var getLocation = new LocationLogic().Get(item.LocationId);
-                    var findFood = new FoodLogic().Get(Convert.ToInt32(item.FoodId));
-
-
-                    if (item.FoodId.Contains(",") && item.Price.Contains(","))
-                    {
-                        string[] splitPrice = item.Price.Split(',');
-
-                        foreach (var val in splitPrice)
-                        {
-                            getPrice.Add(Convert.ToDecimal(val));
-
-                        }
-
-                    }
-                    else
-                    {
-                        if (item.Price != "" || item.Price != null)
-                        {
-                            var price = Convert.ToDecimal(item.Price);
-                            getPrice.Add(price);
-
-                        }
-                    }
-                }
-            }
-            else
-            {
-                getPrice = new List<decimal>();
-            }
-            return getPrice;
-        }
-        public List<decimal> GetListRestaurantFoodsPrice(string searchTerm)
-        {
-            var restaurant = _context.Restaurants.ToList();
-            List<decimal> getPrice = null;
-            var getAllPrice = new List<decimal>();
-            FoodViewModels getFood = new FoodViewModels();
-            if (restaurant != null)
-            {
-                foreach (var item in restaurant)
-                {
-                    var getLocation = new LocationLogic().Get(item.LocationId);
-                    var findFood = new FoodLogic().Get(Convert.ToInt32(item.FoodId));
-                    if (getLocation != null)
-                    {
-                        if (getLocation.Name.Contains(searchTerm))
-                        {
-                            if (item.FoodId.Contains(",") && item.Price.Contains(","))
-                            {
-                                string[] splitPrice = item.Price.Split(',');
-
-                                foreach (var val in splitPrice)
-                                {
-                                    getPrice.Add(Convert.ToDecimal(val));
-
-                                }
-
-                            }
-                            else
-                            {
-                                getPrice.Add(Convert.ToDecimal(item.Price));
-                            }
-                        }
-                        else if (item.Name.Contains(searchTerm))
-                        {
-                            if (item.FoodId.Contains(",") && item.Price.Contains(","))
-                            {
-                                string[] splitPrice = item.Price.Split(',');
-
-                                foreach (var val in splitPrice)
-                                {
-                                    getPrice.Add(Convert.ToDecimal(val));
-
-                                }
-
-                            }
-                            else
-                            {
-                                getPrice.Add(Convert.ToDecimal(item.Price));
-                            }
-                        }
-                        else if (findFood.Name.Contains(searchTerm))
-                        {
-                            if (item.FoodId.Contains(",") && item.Price.Contains(","))
-                            {
-                                string[] splitPrice = item.Price.Split(',');
-
-                                foreach (var val in splitPrice)
-                                {
-                                    getPrice.Add(Convert.ToDecimal(val));
-
-                                }
-
-                            }
-                            else
-                            {
-                                getPrice.Add(Convert.ToDecimal(item.Price));
-                            }
-                        }
-                    }
-
-
-                }
-            }
-            else
-            {
-                getPrice = new List<decimal>();
-            }
-            return getPrice;
-        }
+        
         public List<FoodViewModels> GetListRestaurantFoods(string searchTerm)
         {
             var restaurant = _context.Restaurants.ToList();
@@ -180,18 +60,20 @@ namespace KABE_Food_Ordering_System.Logic
                                     if (findFood != null)
                                     {
                                         var findLocation = new LocationLogic().Get(item.LocationId);
-
-                                        getAllFoodId.Add(new FoodViewModels
+                                        if (searchTerm.Contains(findFood.Name))
                                         {
-                                            Id = findFood.Id,
-                                            RestaurantName = item.Name,
-                                            ContentType = findFood.ContentType,
-                                            Name = findFood.Name,
-                                            Location = findLocation.Name,
-                                            Image = findFood.Image,
-                                            Price = Price,
-                                            About = item.About
-                                        });
+                                            getAllFoodId.Add(new FoodViewModels
+                                            {
+                                                Id = findFood.Id,
+                                                RestaurantName = item.Name,
+                                                ContentType = findFood.ContentType,
+                                                Name = findFood.Name,
+                                                Location = findLocation.Name,
+                                                Image = findFood.Image,
+                                                Price = Price,
+                                                About = item.About
+                                            });
+                                        }
                                         i++;
                                     }
                                 }

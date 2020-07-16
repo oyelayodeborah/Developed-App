@@ -20,6 +20,99 @@ namespace KABE_Food_Ordering_System.Controllers
 
         public AccountLogic accountLogic = new AccountLogic();
 
+        // GET: Account/SendCredential
+        public ActionResult Register()
+        {
+            var user = baseLogic.GetAll();
+            
+            ApplicationDbContext _context = new ApplicationDbContext();
+            var role = _context.Roles.ToList().Where(c=>c.Name=="Customer");
+            if (role != null)
+            {
+                var model = new User()
+                {
+                    Roles = role//roleLogic.GetAll()
+                };
+                return View(model);
+            }
+            else
+            {
+                Role newRole = new Role();
+                newRole.Name = "Customer";
+                roleLogic.Save(newRole);
+                role = _context.Roles.ToList().Where(c => c.Name == "Customer");
+                var model = new User()
+                {
+                    Roles = role//roleLogic.GetAll()
+                };
+                return View(model);
+            }
+            
+        }
+
+        //POST: Account/SendCredential
+        [NoUserOnlyRestrictLogic]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "Email,RoleId,Name")]  User model)
+        {
+            RoleLogic roleLogic = new RoleLogic();
+            model.Roles = roleLogic.GetAll();
+            Role getRole = roleLogic.roleRepo.Get(model.RoleId);
+            string password = accountLogic.GeneratePassword();
+            password = "password";
+            model.Password = Crypto.Hash(password);
+            //accountLogic.SendingEmail(model.Email, getRole.Name, password);
+            model.LastLoggedIn = DateTime.Now;
+            model.LastLoggedOut = DateTime.Now;
+            model.Status = Status.ProfileNotCreated;
+            model.SecretQuestions = "?";
+            model.DateCreated = DateTime.Now;
+
+            try     //if success
+            {
+                
+                //sendMail = "Successful";
+                //if (sendMail == "Successful")
+                //    {
+                if (accountLogic.IsDetailsExist(model.Email))
+                {
+                    baseLogic.Save(model);
+                    accountLogic.SaveCustomer(model);
+                    var sendMail = /*"Successful";*/ accountLogic.SendingMail(model.Email, getRole.Name, password);
+                    var mail = sendMail;
+
+                    ViewBag.Message = "Success";
+
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    ViewBag.Message = "Exist";
+                    return View(model);
+                }
+                    
+                //}
+                //else
+                //{
+                //    TempData["Message"] = "Email error";
+                //    return View(model);
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+                ViewBag.Message = "Error";
+                return View(model);
+            }
+            //catch (Exception ex)
+            //{
+            //    ModelState.AddModelError("", ex.ToString());
+            //    return View(model);
+            //}
+        }
+
 
         // GET: User
         public ActionResult Index()

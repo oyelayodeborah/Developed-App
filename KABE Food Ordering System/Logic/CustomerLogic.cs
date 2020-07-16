@@ -18,7 +18,7 @@ namespace KABE_Food_Ordering_System.Logic
             return Repo.GetAll();
         }
 
-        public List<Food> SetRecommendedFood(int id)
+        public List<Food> SetRecommendedFood(int id, DateTime lastLoggedIn)
         {
             var item = GetByUserID(id);
             var getAllFoodId = new List<Food>();
@@ -31,159 +31,221 @@ namespace KABE_Food_Ordering_System.Logic
             List<string> setFoodId = new List<string>();
             IEnumerable<string> getFoodAllergies = null;
             string[] newArray = { };
+            List<int> gatherRemoveElements = new List<int>();
 
             if (item != null)
             {
 
-                if (item.RecommendedFood != null)
+                if (item.RecommendedFood != "")
                 {
 
                     if (item.RecommendedFood.Contains(","))
                     {
                         getFoodId = from val in item.RecommendedFood.Split(',')
                                     select Convert.ToString(val);
+                        foreach(var getid in getFoodId)
+                        {
+                            getFood = new FoodLogic().Get(Convert.ToInt32(getid));
+                            if (getFood != null)
+                            {
+                                getAllFoodId.Add(new Food { Id = getFood.Id, Image = getFood.Image, ContentType = getFood.ContentType, Name = getFood.Name });
+                            }
+                        }
                     }
                     else
                     {
                         setFoodId.Add(item.RecommendedFood);
                         getFoodId = setFoodId;
+                        foreach (var getid in getFoodId)
+                        {
+                            getFood = new FoodLogic().Get(Convert.ToInt32(getid));
+                            if (getFood != null)
+                            {
+                                getAllFoodId.Add(new Food { Id = getFood.Id, Image = getFood.Image, ContentType = getFood.ContentType, Name = getFood.Name });
+                            }
+                        }
                     }
                 }
-                string foodallergies = item.FoodAllergies;
-                if (foodallergies != null || foodallergies != "")
+                if (lastLoggedIn.Date != DateTime.Now.Date)
                 {
-                    if (item.FoodAllergies.Contains(","))
+                    item.RecommendedFood = "";
+                    Repo.Update(item);
+                    string foodallergies = item.FoodAllergies;
+                    if (foodallergies != null || foodallergies != "")
                     {
-                        getFoodAllergies = from allergies in item.FoodAllergies.Split(',')
-                                           select Convert.ToString(allergies);
-                        foreach (var foodall in getFoodAllergies)
+                        if (item.FoodAllergies.Contains(","))
                         {
-                            getFood = new FoodLogic().FindFoodByName(foodall);
+                            getFoodAllergies = from allergies in item.FoodAllergies.Split(',')
+                                               select Convert.ToString(allergies);
+                            foreach (var foodall in getFoodAllergies)
+                            {
+                                getFood = new FoodLogic().FindFoodByName(foodall);
+                                if (getFood != null)
+                                {
+                                    foreach (var food in getAll)
+                                    {
+                                        if (food.Id == getFood.Id)
+                                        {
+                                            gatherRemoveElements.Add(food.Id);
+
+                                        }
+                                        else
+                                        {
+                                            var foodid = food.Id;
+                                            getAllFood.Add(foodid);
+                                        }
+                                    }
+                                }
+                                //else
+                                //{
+                                //    if (getAllFood.Count()==0)
+                                //    {
+                                //        int j = 0;
+                                //        foreach (var allid in getAll)
+                                //        {
+                                //            getAllFood.Add(allid.Id);
+                                //        }
+                                //    }
+                                //}
+                            }
+                            if (gatherRemoveElements.Count != 0)
+                            {
+                                foreach (var remove in gatherRemoveElements)
+                                {
+                                    var getRemove = getAll.SingleOrDefault(r => r.Id == remove);
+                                    getAll.Remove(getRemove);
+                                }
+
+                            }
+
+                            if (getAllFood.Count() == 0)
+                            {
+                                int j = 0;
+                                foreach (var allid in getAll)
+                                {
+                                    getAllFood.Add(allid.Id);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            getFood = new FoodLogic().FindFoodByName(item.FoodAllergies);
                             if (getFood != null)
                             {
                                 foreach (var food in getAll)
                                 {
                                     if (food.Id == getFood.Id)
                                     {
-                                        getAll.Remove(new Food { Id = food.Id, Image = food.Image, ContentType = food.ContentType, Name = food.ContentType });
+                                        gatherRemoveElements.Add(food.Id);
                                     }
                                     else
                                     {
                                         getAllFood.Add(food.Id);
                                     }
                                 }
+                                if (gatherRemoveElements.Count != 0)
+                                {
+                                    foreach (var remove in gatherRemoveElements)
+                                    {
+                                        var getRemove = getAll.SingleOrDefault(r => r.Id == remove);
+                                        getAll.Remove(getRemove);
+                                    }
+
+                                }
                             }
                             else
                             {
-                                if (getAllFood.Count()==0)
+                                int j = 0;
+                                foreach (var allid in getAll)
                                 {
-                                    int j = 0;
-                                    foreach (var allid in getAll)
-                                    {
-                                        getAllFood.Add(allid.Id);
-                                    }
+                                    getAllFood.Add(allid.Id);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        getFood = new FoodLogic().FindFoodByName(item.FoodAllergies);
-                        if (getFood != null)
+                        int j = 0;
+                        foreach (var allid in getAll)
                         {
-                            foreach (var food in getAll)
-                            {
-                                if (food.Id == getFood.Id)
-                                {
-                                    getAll.Remove(new Food { Id = food.Id, Image = food.Image, ContentType = food.ContentType, Name = food.ContentType });
-                                }
-                                else
-                                {
-                                    getAllFood.Add(food.Id);
-                                }
-                            }
+                            getAllFood.Add(allid.Id);
+                        }
+                    }
+
+
+                    int[] index = new int[3];
+                    string recommendedFood = "";
+                    int key = 0;
+                    var varIndex = 0;
+
+                    var countIndex = getAll.Count;
+                    if (countIndex > 3)
+                    {
+                        countIndex = 3;
+                    }
+                    for (int i = 0; i < countIndex; i++)
+                    {
+                        Random rand = new Random();
+                        // Generate a random index less than the size of the array.
+                        varIndex = rand.Next(getAllFood.Count());
+                        var getIndex = getAllFood[varIndex];
+                        bool findIndex = index.Contains(getIndex);
+                        if (findIndex == false)
+                        {
+                            index[i] = Convert.ToInt32(getAllFood[varIndex]);
                         }
                         else
                         {
-                            int j = 0;
-                            foreach (var allid in getAll)
-                            {
-                                getAllFood.Add(allid.Id);
-                            }
+                            i--;
                         }
                     }
-                }
-                else
-                {
-                    int j = 0;
-                    foreach (var allid in getAll)
+                    foreach (var value in index)
                     {
-                        getAllFood.Add(allid.Id);
-                    }
-                }
-
-
-                int[] index = new int[3];
-                string recommendedFood = "";
-                int key = 0;
-                var varIndex = 0;
-
-                var countIndex = getAll.Count;
-                if (countIndex > 3)
-                {
-                    countIndex = 3;
-                }
-                for (int i = 0; i < countIndex; i++)
-                {
-                    Random rand = new Random();
-                    // Generate a random index less than the size of the array.
-                    varIndex = rand.Next(getAllFood.Count());
-
-                    index[i] = Convert.ToInt32(getAllFood[varIndex]);
-                }
-                foreach (var value in index)
-                {
-                    var itemvalue = Convert.ToInt32(value);
-                    if (key < 3 && key < getAllFood.Count())
-                    {
-                        int IndexValue = index[key];
-                        if (getAllFood.Count() != 0)
+                        var itemvalue = Convert.ToInt32(value);
+                        if (getAllFoodId.Count() < 3)
                         {
-                            foreach (var itemFood in getAllFood)
+                            int IndexValue = index[key];
+                            if (getAllFood.Count() != 0)
                             {
+                                //foreach (var itemFood in getAllFood)
+                                //{
 
-                                if (itemFood != itemvalue)
+
+                                //    if (getAllFoodId.Count() < 3)
+                                //    {
+
+                                getFood = foodLogic.Get(Convert.ToInt32(value));
+                                var getRecommendFood = getAllFoodId.SingleOrDefault(r => r.Id == getFood.Id);
+                                if (getRecommendFood == null)
                                 {
-                                    if (getAllFoodId.Count() <= 3)
+                                    if (recommendedFood == "")
                                     {
-
-                                        getFood = foodLogic.Get(Convert.ToInt32(getAllFood[key]));
-                                        if (recommendedFood == "")
-                                        {
-                                            recommendedFood = getFood.Id.ToString();
-                                        }
-                                        else
-                                        {
-                                            var addMore = recommendedFood + "," + getFood.Id.ToString();
-                                            recommendedFood = addMore;
-                                        }
-                                        getAllFoodId.Add(new Food { Id = getFood.Id, Image = getFood.Image, ContentType = getFood.ContentType, Name = getFood.Name });
+                                        recommendedFood = getFood.Id.ToString();
                                     }
+                                    else
+                                    {
+                                        var addMore = recommendedFood + "," + getFood.Id.ToString();
+                                        recommendedFood = addMore;
+                                    }
+                                    getAllFoodId.Add(new Food { Id = getFood.Id, Image = getFood.Image, ContentType = getFood.ContentType, Name = getFood.Name });
+                                    //    }
+                                    //}
 
                                 }
                             }
                         }
+                        key++;
+
                     }
-                    key++;
+                    item.RecommendedFood = recommendedFood;
+                    Repo.Update(item);
 
+
+                //else
+                //{
+                //        getAllFoodId = new List<Food>();
+                // }
                 }
-                item.RecommendedFood = recommendedFood;
-                Repo.Update(item);
-
-            }
-            else
-            {
-                getAllFoodId = new List<Food>();
             }
             return getAllFoodId;
         }

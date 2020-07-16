@@ -17,19 +17,25 @@ namespace KABE_Food_Ordering_System.Logic
         public BaseLogic<Customer>customerLogic = new BaseLogic<Customer>(new ApplicationDbContext());
 
 
-        public string Celebrate(string role, string email, string name, DateTime dateTobeCelebrated)
+        public string Celebrate(string role, string email, string name, DateTime dateTobeCelebrated, DateTime lastLoggedIn)
         {
             var celebrationText = "";
             if (dateTobeCelebrated.Date == DateTime.Now.Date)
             {
                 if (role == "Customer")
                 {
-                    CelebrateCustomerMail(email,name);
+                    if (lastLoggedIn.Date != DateTime.Now.Date)
+                    {
+                        CelebrateCustomerMail(email, name);
+                    }
                     celebrationText= "We are wishing you a happy birthday, Long Life and Prosperity.";
                 }
                 if (role == "Restaurant")
                 {
-                    CelebrateRestaurantMail(email, name);
+                    if (lastLoggedIn.Date != DateTime.Now.Date)
+                    {
+                        CelebrateRestaurantMail(email, name);
+                    }
                     celebrationText = "We are wishing you a happy anniversary, Looking forward to doing more business with you.";
 
                 }
@@ -89,11 +95,11 @@ namespace KABE_Food_Ordering_System.Logic
             return password.ToString();
         }
 
-        public void SendingEmail(string email, string role, string password)
+        public string SendingEmail(string email, string role, string password)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE_Food_Ordering_System Food Ordering and Recommendation System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE_Food_Ordering_System Food Ordering and Recommendation System");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Login details !!!";
 
             string body = "<br/><br/>Dear "+role+",<br/>Kindly login with the provided url below <br/> " +
@@ -120,22 +126,22 @@ namespace KABE_Food_Ordering_System.Logic
                 try
                 {
                     smtp.Send(message);
-                    //return password;
+                    return "Successful";
                 }
                 catch (SmtpException)
                 {
-                    SmtpException output = new SmtpException("An error ocurred while sending the mail");
-                    throw output;
-                    //var output = "Error";
-                    //return output;
+                    //SmtpException output= new SmtpException("An error ocurred while sending the mail");
+                    //throw output;
+                    var output = "Error";
+                    return output;
                 }
 
         }
         public string SendingMail(string email, string role, string password)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE Food Ordering System");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Login details !!!";
 
             string body = "<br/><br/>Dear " + role + ",<br/> We are happy to tell you your account has been created successfully<br/> " +
@@ -174,9 +180,9 @@ namespace KABE_Food_Ordering_System.Logic
         }
         public string SendingVerificationCode(string email, string name, string verificationCode)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE Food Ordering System");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Verification Code !!!";
 
             string body = "<br/><br/>Dear " + name + ",<br/> This is the verification Code for the transaction you are about to perform is "+verificationCode+"<br/> This email is confidential ensure you delete it after use";
@@ -214,9 +220,10 @@ namespace KABE_Food_Ordering_System.Logic
         }
         public string CelebrateCustomerMail(string email, string name)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE Food Ordering System");
+            //var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System"); i left it like that for future testing yes
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Greetings from KABE Food Ordering System !!!";
 
             string body = "<br/><br/>Dear " + name + ",<br/> KABE Food Ordering System is wishing you a happy birthday, Long Life and Prosperity.<br/> Have a great day";
@@ -254,9 +261,9 @@ namespace KABE_Food_Ordering_System.Logic
         }
         public string CelebrateRestaurantMail(string email, string name)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE Food Ordering System");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Greetings from KABE Food Ordering System !!!";
 
             string body = "<br/><br/>Dear " + name + ",<br/> KABE Food Ordering System is wishing you a happy anniversary, we love doing business with you.";
@@ -341,11 +348,11 @@ namespace KABE_Food_Ordering_System.Logic
             }
         }
 
-        public void NotifyEmail(string email, string role)
+        public string NotifyEmail(string email, string role)
         {
-            var fromEmail = new MailAddress("oyelayodeborah@gmail.com", "KABE Food Ordering System");
+            var fromEmail = new MailAddress("onyeka.onyeogu@stu.cu.edu.ng", "KABE Food Ordering System");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "15ch03774";
+            var fromEmailPassword = "Kabecollege1";
             string subject = "Login details !!!";
 
             string body = "<br/><br/>Dear " + role + ",<br/>This is to inform you that your account password has been changed<br/> ";
@@ -370,14 +377,14 @@ namespace KABE_Food_Ordering_System.Logic
                 try
                 {
                     smtp.Send(message);
-                    //return password;
+                    return "Successful";
                 }
                 catch (SmtpException)
                 {
-                    SmtpException output = new SmtpException("An error ocurred while sending the mail");
-                    throw output;
-                    //var output = "Error";
-                    //return output;
+                    //SmtpException output= new SmtpException("An error ocurred while sending the mail");
+                    //throw output;
+                    var output = "Error";
+                    return output;
                 }
 
         }

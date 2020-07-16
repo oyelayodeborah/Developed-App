@@ -97,3 +97,4 @@ C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering Sys
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb2.resources
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb4.resources
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb5.resources
+C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb6.resources

@@ -93,7 +93,7 @@ namespace KABE_Food_Ordering_System.Controllers
         [CustomerRestrictLogic]
         public ViewResult Search(string searchTerm)
         {
-            if (searchTerm != null)
+            if (searchTerm != "" && searchTerm!=null)
             {
                 var Food = new RestaurantLogic().GetListRestaurantFoods(searchTerm);
                 int i = 0;
@@ -106,7 +106,7 @@ namespace KABE_Food_Ordering_System.Controllers
 
                     if (restaurant.Count != 0)
                     {
-                        var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
+                        //var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
 
                         ViewBag.Results = getRestaurant;
                         ViewBag.TotalItems = getRestaurant.Count();
@@ -116,7 +116,7 @@ namespace KABE_Food_Ordering_System.Controllers
                         var Location = new RestaurantLogic().GetFoodsByLocation(searchTerm);
                         if (Location.Count != 0)
                         {
-                            var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
+                            //var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
                             ViewBag.Results = getLocation;
                             ViewBag.TotalItems = getLocation.Count();
                         }
@@ -131,7 +131,7 @@ namespace KABE_Food_Ordering_System.Controllers
                 }
                 else
                 {
-                    var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
+                    //var getPrice = new RestaurantLogic().GetListRestaurantFoodsPrice(searchTerm).ToArray();
 
                     getFood = new RestaurantLogic().GetListRestaurantFoods(searchTerm);
                     ViewBag.Results = getFood;
