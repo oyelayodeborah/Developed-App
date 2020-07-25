@@ -65,38 +65,120 @@
 
                 <h4> <strong id="Price"> Price: N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</strong></h4>
             </div>
-            
+
         }
         <div class="form-group ">
             @Html.LabelFor(m => m.FoodQuantity)
-            @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, required = "required", pattern= "\\d+$" })
+            @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, required = "required", pattern = "\\d+$" })
             @Html.ValidationMessageFor(model => model.FoodQuantity, "", new { @class = "text-danger" })
 
         </div>
         <div class="form-group ">
             @Html.LabelFor(m => m.ResidentialAddress)
-            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, required = "required"})
+            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, required = "required" })
             @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
 
         </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.LocationId)
-        @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
-        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-    </div>
         <div class="form-group">
-            <h4 ><strong id="Total">Total: N 0.00</strong></h4>
+            @Html.LabelFor(model => model.LocationId)
+            @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <h4><strong id="Total">Total: N 0.00</strong></h4>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
 
-                <input type="submit" value="SUBMIT" class="btn btn-default" name="sub" id="submit" />&emsp;&emsp;
+                <input type="submit" value="PAY FOR FOOD" class="btn" id="payfood" style="background-color: #333" />&emsp;&emsp;
 
             </div>
         </div>
     </div>
 }
+<div id="payEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                <h4 class="modal-title" id="myModalLabel">Order Payment</h4>
+            </div>
+            <div class="modal-body">
+                @Html.ValidationSummary()
+                <span id="error"></span>
+                <div class="row">
+                    <div id="mesg">
+
+
+                    </div>
+
+                    @using (Html.BeginForm("Payment", "Order", FormMethod.Post))
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="amount">Amount: @ViewBag.Amount</label>
+                                @Html.HiddenFor(model => model.Amount)
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" class="form-control" name="cardNumber" required="required" pattern="^[0-9]+$" placeholder="Enter Card Number" minlength="19" maxlength="19" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pin">Pin</label>
+                                <input type="text" id="pin" class="form-control" name="pin" required="required" pattern="^[0-9]+$" placeholder="Enter Pin" minlength="4" maxlength="4" />
+                            </div>
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <select id="expiryDateMonth" name="expiryDateMonth" required>
+                                    <option value="January">January</option>
+                                    <option value="Febuary">Febuary</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                                <select id="expiryDateYear" size="4" name="expiryDateYear" required>
+                                    @{
+                                        var datenow = @DateTime.Now.Year;
+                                        var datetwo = @DateTime.Now.AddYears(1);
+                                        var datethree = @DateTime.Now.AddYears(2);
+                                    }
+                                    <option value=@datenow>@datenow</option>
+                                    <option value=@datetwo>@datetwo.Year</option>
+                                    <option value=@datethree>@datethree.Year</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cvv">CVV2</label>
+                                <input type="text" id="cvv" class="form-control" name="cvv" required="required" pattern="[0-9]+$" placeholder="Enter CVV2" minlength="3" maxlength="3" />
+                            </div>
+                            <div class="form-group">
+                                <label for="verificationCode">Verification Code</label>
+                                <input type="text" id="verificationCode" class="form-control" name="verificationCode" required="required" placeholder="Enter Verification Code" pattern="[0-9]+$" minlength="6" maxlength="6" />
+                            </div>
+
+
+                        </div>
+                        <center><button type="submit" class="btn-default" id="paynow" style="background-color:#333; color:white">PAY NOW</button></center>
+
+                        @Html.AntiForgeryToken()
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section ViewSpecificJavascript
     {
     <script>
@@ -107,6 +189,26 @@
                 3000);
         });
         $("#customers").dataTable();
+        $("#payfood").click(function (e) {
+            $("#payEdit").modal('show');
+
+        });
+        $('#verificationCode').keyup(function () {
+            var vefCode = $(this).val();
+            var actualvefCode = @ViewBag.VefriCode;
+            if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Details");
+            }
+        })
+        $('#paynow').click(function () {
+            var vefCode = $('#verificationCode').val();
+            var actualvefCode = @ViewBag.VefriCode;
+            if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Details");
+            }
+        })
         var multiply = 0;
         var price = $('#Amount').val();
         var total = $('#Total').val();
@@ -120,7 +222,7 @@
         if ($('#FoodQuantity') != "" && total == "Total: N 0.00") {
             $('#FoodQuantity').val("0");
         }
-        
+
 
     </script>
 

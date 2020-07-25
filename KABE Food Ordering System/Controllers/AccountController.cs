@@ -20,10 +20,10 @@ namespace KABE_Food_Ordering_System.Controllers
         public BaseLogic<Role> roleLogic = new BaseLogic<Role>(new ApplicationDbContext());
 
 
-        public BaseLogic<Location>locationLogic = new BaseLogic<Location>(new ApplicationDbContext());
+        public BaseLogic<Location> locationLogic = new BaseLogic<Location>(new ApplicationDbContext());
 
-        
-        
+
+
 
 
         // GET: Account
@@ -41,9 +41,9 @@ namespace KABE_Food_Ordering_System.Controllers
             {
                 if (item.Name != "Admin")
                 {
-                    role.Add(new Role { Id = item.Id, Name=item.Name });
+                    role.Add(new Role { Id = item.Id, Name = item.Name });
                 }
-            }      
+            }
             var model = new User()
             {
                 Roles = role
@@ -112,7 +112,7 @@ namespace KABE_Food_Ordering_System.Controllers
                     ViewBag.Message = "Success";
                     //return RedirectToAction("Index","Home");
                     //return RedirectToAction("SendCredential", "Account");
-                    return View("Index","Home");
+                    return View("Index", "Home");
 
                 }
                 else
@@ -192,19 +192,19 @@ namespace KABE_Food_Ordering_System.Controllers
                     if (getRole.Name == "Restaurant")
                     {
                         var getUserDetails = new RestaurantLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate, findEmailAndPassword.LastLoggedIn);
+                        Session["celebrate"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate, findEmailAndPassword.LastLoggedIn);
                     }
                     else if (getRole.Name == "Customer")
                     {
                         var getDetails = new CustomerLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"]=accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth,findEmailAndPassword.LastLoggedIn);
+                        Session["celebrate"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth, findEmailAndPassword.LastLoggedIn);
                     }
 
                     //Updating the lastLoggedIn details
                     User updateUser = baseLogic.Get(findEmailAndPassword.Id);
                     updateUser.LastLoggedIn = DateTime.Now;
 
-                    if (findEmailAndPassword.Status==Status.InActive/*!= Status.ProfileNotCreated && findEmailAndPassword.Status != Status.ChangePassword*/)
+                    if (findEmailAndPassword.Status == Status.InActive/*!= Status.ProfileNotCreated && findEmailAndPassword.Status != Status.ChangePassword*/)
                     {
                         updateUser.Status = Status.Active;
 
@@ -221,13 +221,13 @@ namespace KABE_Food_Ordering_System.Controllers
 
                         return RedirectToAction("Register", "Restaurant");
                     }
-                    else if (findEmailAndPassword.Status == Status.ProfileNotCreated && getRole.Name.Contains( "Customer"))
+                    else if (findEmailAndPassword.Status == Status.ProfileNotCreated && getRole.Name.Contains("Customer"))
                     {
                         baseLogic.Update(updateUser);
 
                         return RedirectToAction("Register", "Customer");
                     }
-                    else if(findEmailAndPassword.Status == Status.ChangePassword)
+                    else if (findEmailAndPassword.Status == Status.ChangePassword)
                     {
                         baseLogic.Update(updateUser);
 
@@ -253,7 +253,7 @@ namespace KABE_Food_Ordering_System.Controllers
                 return View(user);
             }
             ViewBag.Message = "Session currently Exist";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -266,14 +266,12 @@ namespace KABE_Food_Ordering_System.Controllers
             {
                 ApplicationDbContext _context = new ApplicationDbContext();
                 var role = _context.Roles.ToList();
-                for (int i = 0; i < 1; i++)
+
+                if (role.Count == 0)
                 {
-                    if (role == null)
-                    {
-                        var newRole = new Role();
-                        newRole.Name = "Admin";
-                        roleLogic.Save(newRole);
-                    }
+                    var newRole = new Role();
+                    newRole.Name = "Admin";
+                    roleLogic.Save(newRole);
                 }
                 var model = new User()
                 {
@@ -308,39 +306,39 @@ namespace KABE_Food_Ordering_System.Controllers
             model.DateCreated = DateTime.Now;
 
             try     //if success
-                {
+            {
                 var sendMail = /*"Successful";*/ accountLogic.SendingMail(model.Email, getRole.Name, password);
                 var mail = sendMail;
                 //sendMail = "Successful";
                 //if (sendMail == "Successful")
                 //    {
-                        baseLogic.Save(model);
+                baseLogic.Save(model);
 
 
 
-                        ViewBag.Message = "Success";
+                ViewBag.Message = "Success";
 
-                        return RedirectToAction("Login", "Account");
-                    //}
-                    //else
-                    //{
-                    //    TempData["Message"] = "Email error";
-                    //    return View(model);
-                    //}
-
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", ex.ToString());
-                    TempData["Message"] = "Error";
-                    return View(model);
-                }
-                //catch (Exception ex)
+                return RedirectToAction("Login", "Account");
+                //}
+                //else
                 //{
-                //    ModelState.AddModelError("", ex.ToString());
+                //    TempData["Message"] = "Email error";
                 //    return View(model);
                 //}
+
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+                TempData["Message"] = "Error";
+                return View(model);
+            }
+            //catch (Exception ex)
+            //{
+            //    ModelState.AddModelError("", ex.ToString());
+            //    return View(model);
+            //}
+        }
 
         // GET: Account/SendCredential
         [AdminRoleRestrictLogic]
@@ -383,7 +381,7 @@ namespace KABE_Food_Ordering_System.Controllers
                         accountLogic.SendingMail(model.Email, getRole.Name, password);
                         baseLogic.Update(updatePassword);
                         ViewBag.Message = "Success";
-                        return RedirectToAction("Login","Account");
+                        return RedirectToAction("Login", "Account");
                     }
                     else
                     {

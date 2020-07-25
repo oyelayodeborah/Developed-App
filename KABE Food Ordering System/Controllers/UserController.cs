@@ -27,7 +27,7 @@ namespace KABE_Food_Ordering_System.Controllers
             
             ApplicationDbContext _context = new ApplicationDbContext();
             var role = _context.Roles.ToList().Where(c=>c.Name=="Customer");
-            if (role != null)
+            if (role.Count()!=0)
             {
                 var model = new User()
                 {

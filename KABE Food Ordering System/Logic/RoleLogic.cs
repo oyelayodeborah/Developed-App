@@ -11,6 +11,11 @@ namespace KABE_Food_Ordering_System.Logic
         ApplicationDbContext _context = new ApplicationDbContext();
         public BaseLogic<Role> roleRepo = new BaseLogic<Role>(new ApplicationDbContext());
 
+        public Role GetByName(string value)
+        {
+            var getRole = _context.Roles.Where(c=>c.Name.ToLower()==value.ToLower()).SingleOrDefault();
+            return getRole;
+        }
         public IEnumerable<Role> GetAll()
         {
             return roleRepo.GetAll();

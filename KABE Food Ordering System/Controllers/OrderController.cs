@@ -76,6 +76,7 @@ namespace KABE_Food_Ordering_System.Controllers
                 orderLogic.Save(order);
                 var price = Convert.ToInt32(order.Amount) / Convert.ToInt32(order.FoodQuantity);
                 Session["OrderId"] = order.Id;
+                Session["NewOrderId"] = order.Id;
                 ViewBag.Amount = order.Amount;
                 ViewBag.VefriCode = order.VerificationCode;
                 return View("Payment");
@@ -152,38 +153,49 @@ namespace KABE_Food_Ordering_System.Controllers
 
             return View();
         }
-        // GET: Order/Payment
-        [HttpGet]
-        [OrderProcessing]
-        [CustomerRestrictLogic]
-        public ActionResult Payment()
-        {
-            int id= Convert.ToInt32(Session["OrderId"]);
-            Order order = new OrderLogic().Get(id);
-            ViewBag.Amount = order.Amount;
-            if (order.Status == OrderStatus.NotPaid)
-            {
-                return View(order);
-            }
-            else
-            {
-                return RedirectToAction("Search");
-            }
+        //// GET: Order/Payment
+        //[HttpGet]
+        //[OrderProcessing]
+        //[CustomerRestrictLogic]
+        //public ActionResult Payment()
+        //{
+        //    int id= Convert.ToInt32(Session["NewOrderId"]);
+        //    Order order = new OrderLogic().Get(id);
+        //    ViewBag.Amount = order.Amount;
+        //    if (order.Status == OrderStatus.NotPaid)
+        //    {
+        //        return View(order);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Search");
+        //    }
 
-        }
+        //}
 
         [HttpPost]
         [OrderProcessing]
         [CustomerRestrictLogic]
-        public ActionResult Payment(Order order)
+        public ActionResult Payment()
         {
+            int orderId = Convert.ToInt32(Session["NewOrderId"]);
+            if (orderId == 0)
+            {
+                ViewBag.Message = "Success";
+                return View("All");
+            }
+            var getOrder = new OrderLogic().Get(orderId);
+
+            if (getOrder.Status != OrderStatus.NotPaid)
+            {
+                ViewBag.Message = "Exist";
+                return View("All");
+            }
             var cardNumber = Request.Form["cardNumber"];
             var pin = Request.Form["pin"];
             var expiryDateMonth = Request.Form["expiryDateMonth"];
             var expiryDateYear = Request.Form["expiryDateYear"];
             var verificationCode = Request.Form["verificationCode"];
-            var orderId = Convert.ToInt32(Session["OrderId"]);
-            var getOrder = new OrderLogic().Get(orderId);
             getOrder.CardNumber = cardNumber;
             getOrder.Status = OrderStatus.Pending;
             var deliveryTime = getOrder.DeliveryDateTime.AddHours(2);
@@ -193,12 +205,12 @@ namespace KABE_Food_Ordering_System.Controllers
             {
                 orderLogic.Update(getOrder);
                 ViewBag.Message = "Success";
-                return RedirectToAction("All");
+                return View("All");
             }
             else
             {
                 ViewBag.Message = "Error";
-                return RedirectToAction("All");
+                return View("All");
             }
 
         }
