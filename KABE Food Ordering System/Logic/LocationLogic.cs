@@ -15,6 +15,10 @@ namespace KABE_Food_Ordering_System.Logic
         {
             return locationRepo.Get(id);
         }
+        public IEnumerable<Location> GetAll()
+        {
+            return locationRepo.GetAll();
+        }
         //Checks if the new role about to be created already exist in the database
         public bool IsDetailsExist(string value)
         {

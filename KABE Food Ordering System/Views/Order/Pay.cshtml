@@ -1,0 +1,365 @@
+﻿@model KABE_Food_Ordering_System.Models.Order
+@{
+    ViewBag.Title = "Check Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="order-form">
+
+    @using (Html.BeginForm("Pay", "Order", FormMethod.Post))
+    {
+        decimal amount = 0;
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.CustomerId)
+        @Html.HiddenFor(model => model.FoodId)
+        @Html.HiddenFor(model => model.RestaurantId)
+        @Html.HiddenFor(model => model.TransactionReference)
+        @Html.HiddenFor(model => model.Amount)
+        @Html.HiddenFor(model => model.VerificationCode)
+
+    <div class="col-md-6">
+        @if (ViewBag.Message != null)
+        {
+            if (ViewBag.Message == "Success")
+            {
+                <div class="alert alert-success">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Exist")
+            {
+                <div class="alert alert-error">
+                    <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Error")
+            {
+                <div class="alert alert-error">
+                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+            else if (ViewBag.Message == "Expiry")
+            {
+                <div class="alert alert-error">
+                    <p>Your card can not be used to complete this transaction.  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                </div>
+
+            }
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (ViewBag.Data != null)
+        {
+            var item = ViewBag.Data;
+
+            <div class="form-group">
+                @{
+
+                    var getImage = item.Image;
+                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:150px; height:75px;" />
+
+                }
+            </div>
+            <div class="form-group">
+                <h3> <strong>@item.Name</strong></h3>
+
+            </div>
+            <div class="form-group">
+                <h4><strong>@item.RestaurantName</strong></h4>
+            </div>
+            <div class="form-group">
+
+                <h4><strong id="Price"> Price: N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</strong></h4>
+            </div>
+
+        }
+        <div class="form-group ">
+            @Html.LabelFor(m => m.FoodQuantity)
+            @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, max = 200, min = 1, required = "required", pattern = "\\d+$", @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.FoodQuantity, "", new { @class = "text-danger" })
+
+        </div>
+        <div class="form-group ">
+            @Html.LabelFor(m => m.ResidentialAddress)
+            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, @readonly = "readonly", required = "required" })
+            @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId)
+            @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", @disabled = "disabled", required = "required", @data_live_search = "true" })
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <h4>
+                <strong id="Total">
+                    @{
+                        amount = Convert.ToDecimal(Model.Amount);
+                    }
+                    Total: N @amount.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                </strong>
+            </h4>
+        </div>
+        <div class="form-group">
+            <span id="error" style="color:red;"></span>
+
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit" value="PAY FOR FOOD" class="btn" id="payfood" onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" style="background-color: #333" />&emsp;&emsp;
+
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<div id="payEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                <h4 class="modal-title" id="myModalLabel">Order Payment</h4>
+            </div>
+            <div class="modal-body" ;>
+                @* @Html.ValidationSummary()*@
+                <span id="error" style="color:red;"></span>
+                <div class="row">
+                    <div id="mesg">
+
+
+                    </div>
+
+                    @using (Html.BeginForm("Payment", "Order", FormMethod.Post))
+                    {
+                        if (ViewBag.Message == "Expiry")
+                        {
+                            <div class="alert alert-error">
+                                <p>Your card can not be used to complete this transaction.  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+                            </div>
+
+                        }
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <strong for="amount">Amount: @ViewBag.Amount</strong>
+                                @Html.HiddenFor(model => model.Amount)
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" class="form-control" name="cardNumber" required="required" pattern="^[0-9]+$" placeholder="Enter Card Number" minlength="19" maxlength="19" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pin">Pin</label>
+                                <input type="text" id="pin" class="form-control" name="pin" required="required" pattern="^[0-9]+$" placeholder="Enter Pin" minlength="4" maxlength="4" />
+                            </div>
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <select id="expiryDateMonth" name="expiryDateMonth" required>
+                                    <option></option>
+                                    <option value="January">January</option>
+                                    <option value="Febuary">Febuary</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                                <select id="expiryDateYear" size="4" name="expiryDateYear" required>
+                                    @{
+                                        var datenow = @DateTime.Now.Year;
+                                        var datetwo = @DateTime.Now.AddYears(1);
+                                        var datethree = @DateTime.Now.AddYears(2);
+                                    }
+                                    <option value=@datenow>@datenow</option>
+                                    <option value=@datetwo>@datetwo.Year</option>
+                                    <option value=@datethree>@datethree.Year</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cvv">CVV2</label>
+                                <input type="text" id="cvv" class="form-control" name="cvv" required="required" pattern="[0-9]+$" placeholder="Enter CVV2" minlength="3" maxlength="3" />
+                            </div>
+                            <div class="form-group">
+                                <label for="verfCode">Verification Code</label>
+                                <input type="text" id="verfCode" class="form-control" name="verfCode" required="required" placeholder="Enter Verification Code" pattern="[0-9]+$" minlength="6" maxlength="6" />
+                            </div>
+
+
+                        </div>
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <center> <input type="submit" value="PAY NOW" class="btn" id="paynow" onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" style="background-color: #333" />&emsp;&emsp;</center>
+                        </div>
+                        @*<center><button type="submit" class="btn-default" id="paynow" style="background-color:#333; color:white">PAY NOW</button></center>*@
+
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section ViewSpecificJavascript
+    {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut(100, null);
+            },
+                3000);
+            $('#myModal').on('hidden.bs.modal', function (e) {
+                window.location.href = 'http://localhost:50125/Order/All'
+            });
+        });
+        var msg=@ViewBag.Msg;
+        if (msg != null) {
+            if (msg == 2) {
+                //alert("Before Modal");
+                $("#payEdit").modal('show');
+                $('#order-form').html("Please proceed to payment,order has not been completely processed until Payment is successful");
+
+            }
+        }
+        $("#payfood").click(function (e) {
+            var foodQuan = $('#FoodQuantity').val();
+            if (foodQuan < 1 || foodQuan > 200) {
+                e.preventDefault();
+                $('#error').html("Food quantity must between 1 and 200");
+            }
+            else {
+                //$('#order-form').style.display = "none";
+                //document.getElementById("order-form").style.visibility = "hidden";
+                $('#error').html();
+            }
+        });
+        $('#FoodQuantity').keyup(function () {
+            var foodQuan = $('#FoodQuantity').val();
+            if (foodQuan < 1 ) {
+                e.preventDefault();
+                $('#error').html("Food quantity must between 1 and 200");
+            }
+            else if (foodQuan > 200) {
+                e.preventDefault();
+                $('#error').html("Food quantity must between 1 and 200");
+            }
+            else {
+                $('#error').html();
+            }
+        });
+
+        $("#customers").dataTable();
+
+
+
+        function getMonthFromString(mon) {
+
+            var d = Date.parse(mon + "1, 2012");
+            if (!isNaN(d)) {
+                return new Date(d).getMonth() + 1;
+            }
+            return -1;
+        }
+       @*$('#paynow').click(function () {
+            var vefCode = $('#verfCode').val();
+            var actualvefCode = @ViewBag.VefriCode;
+            if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Details");
+            }
+           else {
+                $('#error').html();
+            }
+
+        });*@
+        $('#verfCode').keyup(function () {
+            var vefCode = $(this).val();
+            var actualvefCode = @ViewBag.VefriCode;
+            if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Verification Code");
+            }
+            else {
+                $('#error').html();
+            }
+        });
+
+        $('#paynow').click(function () {
+            var vefCode = $('#verfCode').val();
+            var actualvefCode = @ViewBag.VefriCode;
+            if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Verification Code");
+            }
+            else {
+                $('#error').html();
+            }
+        });
+        $('#paynow').click(function (e) {
+            var vefCode = $('#verfCode').val();
+            var actualvefCode = @ViewBag.VefriCode;
+            var monthSelected = $(this).val();
+            var month = 0;
+            @{
+                ViewBag.Month = DateTime.Now.Month;
+            }
+            var actualdatemonth = @ViewBag.Month;
+
+
+            //if (monthSelected != null || monthSelected != "") {
+            month = getMonthFromString(monthSelected);
+            if (actualdatemonth != null) {
+                if (month < actualdatemonth) {
+                    e.preventDefault();
+                    $('#error').html("Your card can not be used to complete this transaction.");
+                }
+
+            }
+            else if (vefCode != actualvefCode) {
+                e.preventDefault();
+                $('#error').html("Incorrect Verification Code");
+            }
+
+            else {
+                $('#error').html();
+            }
+            //}
+        });
+        var multiply = 0;
+        var price = $('#Amount').val();
+        var total = $('#Total').val();
+        $('#FoodQuantity').keyup(function () {
+            var quantity = $(this).val();
+            multiply = quantity * price;
+            if (quantity >= 1 && quantity <= 200) {
+                $("#Total").html("Total: N" + multiply + ".00");
+                $("#Amount").val(multiply);
+
+            }
+            else {
+                $("#Total").html("Food quantity must between 1 and 200");
+                $("#Amount").val("0.00");
+            }
+        })
+        if ($('#FoodQuantity') != "" && total == "Total: N 0.00") {
+            $('#FoodQuantity').val("0");
+        }
+
+
+    </script>
+
+}

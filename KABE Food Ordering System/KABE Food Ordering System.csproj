@@ -1456,7 +1456,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper.min.js.map" />
     <Content Include="Scripts\README.md" />
-    <Content Include="Views\Order\Payment.cshtml" />
     <Content Include="Views\Food\Recommend.cshtml" />
     <Content Include="Views\Order\New.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
@@ -1468,6 +1467,7 @@
     <Content Include="Views\Customer\Update.cshtml" />
     <Content Include="Views\Restaurant\Update.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Order\Pay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

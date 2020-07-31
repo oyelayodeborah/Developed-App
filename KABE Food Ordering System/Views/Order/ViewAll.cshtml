@@ -58,6 +58,9 @@
                 @Html.DisplayNameFor(model => model.LocationId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.OrderDateTime)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DeliveryDateTime)
             </th>
             <th>
@@ -92,7 +95,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
@@ -101,6 +104,9 @@
                     var getLocation = new KABE_Food_Ordering_System.Logic.LocationLogic().Get(Convert.ToInt32(item.LocationId));
                 }
                 @item.ResidentialAddress, @getLocation.Name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryDateTime)

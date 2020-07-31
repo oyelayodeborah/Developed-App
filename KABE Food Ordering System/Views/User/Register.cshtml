@@ -3,7 +3,7 @@
 @{
     /**/
 
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Register as a Customer";
     Layout = null;
 }
 
@@ -12,94 +12,96 @@
 {
 
     @Html.AntiForgeryToken()
-    <div class=" form-signin col-md-6">
-        <div class="text-center mb-4">
-            <h1>Register</h1>
-        </div>
-        @if (ViewBag.Message != null)
+<div class=" form-signin col-md-6">
+    <div class="text-center mb-4">
+        <h1>Register as a Customer</h1>
+    </div>
+    @if (ViewBag.Message != null)
+    {
+        if (ViewBag.Message == "Success")
         {
-            if (ViewBag.Message == "Success")
-            {
-                <div class="alert alert-success">
-                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+            <div class="alert alert-success">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-                </div>
-
-            }
-
-            else if (ViewBag.Message == "Exist")
-            {
-                <div class="alert alert-error">
-                    <p>User already Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
-
-                </div>
-
-            }
-            else if (ViewBag.Message == "Error")
-            {
-                <div class="alert alert-error">
-                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
-
-                </div>
-
-            }
+            </div>
 
         }
-        @if (TempData["Message"] != null)
+
+        else if (ViewBag.Message == "Exist")
         {
-            if (TempData["Message"].ToString() == "Email error")
-            {
-                <div class="alert alert-error">
+            <div class="alert alert-error">
+                <p>User already Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+        else if (ViewBag.Message == "Error")
+        {
+            <div class="alert alert-error">
+                <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+
+            </div>
+
+        }
+
+    }
+    @if (TempData["Message"] != null)
+    {
+        if (TempData["Message"].ToString() == "Email error")
+        {
+            <div class="alert alert-error">
                 <p>An error ocurred while sending the mail, Check your Internet Connection<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
             </div>
 
         }
     }
-        <div class="form-group ">
-            @Html.LabelFor(m => m.Name)
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email)
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email", required = "required", minlength = 9, maxlength = 255 } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.RoleId)
-            @Html.DropDownListFor(model => model.RoleId, new SelectList(Model.Roles, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
-            @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group ">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", maxlength = 255, pattern = "^[A-Z\\sa-z]+$", minlength = 5, required = "required" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email", required = "required", minlength = 9, maxlength = 255 } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.RoleId)
+        @Html.DropDownListFor(model => model.RoleId, new SelectList(Model.Roles, "Id", "Name"), "Choose an Option", new { @class = "form-control", required = "required", @data_live_search = "true" })
+        @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+    </div>
 
-        @*<div class="form-group ">
-                    @Html.LabelFor(m => m.SecretQuestions)
-                    @Html.DropDownListFor(m=>m.SecretQuestions, new[] {
-                   new SelectListItem() { Text = "What month did you enter the university?  ", Value = "What month did you enter the university?" },
-                   new SelectListItem() { Text = "What is your mother's month of birth?", Value = "What is your mother's month of birth?" },
-                   new SelectListItem() { Text = "What is your father's month of birth?", Value = "What is your mother's month of birth?" },
-                   new SelectListItem() { Text = "What is your employment's month of birth?", Value = "What is your mother's month of birth?" },
-                   new SelectListItem() { Text = "What month did you enter the university?  ", Value = "What month did you enter the university?" },
-            }, "Choose an Option", new { @class = "form-control",required="required", @data_live_search = "true" })
+    @*<div class="form-group ">
+                @Html.LabelFor(m => m.SecretQuestions)
+                @Html.DropDownListFor(m=>m.SecretQuestions, new[] {
+               new SelectListItem() { Text = "What month did you enter the university?  ", Value = "What month did you enter the university?" },
+               new SelectListItem() { Text = "What is your mother's month of birth?", Value = "What is your mother's month of birth?" },
+               new SelectListItem() { Text = "What is your father's month of birth?", Value = "What is your mother's month of birth?" },
+               new SelectListItem() { Text = "What is your employment's month of birth?", Value = "What is your mother's month of birth?" },
+               new SelectListItem() { Text = "What month did you enter the university?  ", Value = "What month did you enter the university?" },
+        }, "Choose an Option", new { @class = "form-control",required="required", @data_live_search = "true" })
 
-                    @Html.ValidationMessageFor(model => model.SecretQuestions, "", new { @class = "text-danger" })
-                </div>*@
-        <div class="form-group">
-            <button class="btn btn-lg btn-block " onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" type="submit" style="background-color:#333;color:#ddd;">Register &emsp;<i class="fa fa-sign-in"></i></button>
-        </div>
+                @Html.ValidationMessageFor(model => model.SecretQuestions, "", new { @class = "text-danger" })
+            </div>*@
+    <div class="form-group">
+        <button class="btn btn-lg btn-block " onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" type="submit" style="background-color:#333;color:#ddd;">Register &emsp;<i class="fa fa-sign-in"></i></button>
+    </div>
+    <div class="form-group" style="text-align:center">
+        <a href=@Url.Action("Login","Account") style="text-align:center">Go Back To Login Page</a>
+    </div>
+    <p class="mt-5 mb-3 text-muted text-center"><b>KABE</b> &copy;@DateTime.Now.Year</p>
 
-        <p class="mt-5 mb-3 text-muted text-center"><b>KABE</b> &copy;@DateTime.Now.Year</p>
 
 
-
-        </div>
+</div>
     }
 @section ViewSpecificJavascript
     {
     <script>
         $(document).ready(function () {
             setTimeout(function () {
-                $(".alert").fadeOut(100, null);
+                $(".alert").fadeOut(20, null);
             },
                 3000);
         })

@@ -17,6 +17,36 @@ namespace KABE_Food_Ordering_System.Controllers
         //[SessionRestrictLogic]
         public ActionResult Index()
         {
+            var id = Convert.ToInt32(Session["id"]);
+            var getRole = Session["role"].ToString();
+            var celebrateDate = DateTime.Now;
+            var datenow = DateTime.Now.Date;
+            if (getRole == "Restaurant")
+            {
+                var getUserDetails = new RestaurantLogic().GetByUserID(id);
+                celebrateDate = getUserDetails.EstablishmentDate.Date;
+                if (datenow == celebrateDate)
+                {
+                    Session["celebrate"] = "We are wishing you a happy anniversary, Looking forward to doing more business with you.";
+                }
+                else
+                {
+                    Session["celebrate"] = "";
+                }
+            }
+            else if (getRole == "Customer")
+            {
+                var getDetails = new CustomerLogic().GetByUserID(id);
+                celebrateDate = getDetails.DateOfBirth.Date;
+                if (datenow == celebrateDate)
+                {
+                    Session["celebrate"] = "We are wishing you a happy birthday, Long Life and Prosperity.";
+                }
+                else
+                {
+                    Session["celebrate"] = "";
+                }
+            }
             return View();
         }
 

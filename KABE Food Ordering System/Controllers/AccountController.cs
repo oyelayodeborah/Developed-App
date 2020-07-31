@@ -143,7 +143,7 @@ namespace KABE_Food_Ordering_System.Controllers
 
 
         // GET: Account/Login
-
+        [HttpGet]
         public ActionResult Login(int? id)
         {
             var user = baseLogic.GetAll();
@@ -192,12 +192,12 @@ namespace KABE_Food_Ordering_System.Controllers
                     if (getRole.Name == "Restaurant")
                     {
                         var getUserDetails = new RestaurantLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate, findEmailAndPassword.LastLoggedIn);
+                        Session["celebrateAt"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getUserDetails.EstablishmentDate, findEmailAndPassword.LastLoggedIn);
                     }
                     else if (getRole.Name == "Customer")
                     {
                         var getDetails = new CustomerLogic().GetByUserID(findEmailAndPassword.Id);
-                        Session["celebrate"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth, findEmailAndPassword.LastLoggedIn);
+                        Session["celebrateAt"] = accountLogic.Celebrate(getRole.Name, findEmailAndPassword.Email, findEmailAndPassword.Name, getDetails.DateOfBirth, findEmailAndPassword.LastLoggedIn);
                     }
 
                     //Updating the lastLoggedIn details

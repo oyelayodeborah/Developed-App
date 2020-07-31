@@ -42,9 +42,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.CustomerId)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CardNumber)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.FoodId)
             </th>
@@ -62,6 +60,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDateTime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryDateTime)
@@ -84,9 +85,7 @@
                 }
                 @getCustomer.Name
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CardNumber)
-            </td>
+            
             <td>
                 @{
                     var getFood = new KABE_Food_Ordering_System.Logic.FoodLogic().Get(Convert.ToInt32(item.FoodId));
@@ -113,6 +112,9 @@
                     var getLocation = new KABE_Food_Ordering_System.Logic.LocationLogic().Get(Convert.ToInt32(item.LocationId));
                 }
                 @item.ResidentialAddress, @getLocation.Name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryDateTime)
