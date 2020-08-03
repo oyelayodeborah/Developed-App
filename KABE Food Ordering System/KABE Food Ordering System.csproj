@@ -1510,9 +1510,9 @@
     <Compile Include="Migrations\202007101617005_UpdateDb5.designer.cs">
       <DependentUpon>202007101617005_UpdateDb5.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202007152039404_UpdateDb6.cs" />
-    <Compile Include="Migrations\202007152039404_UpdateDb6.designer.cs">
-      <DependentUpon>202007152039404_UpdateDb6.cs</DependentUpon>
+    <Compile Include="Migrations\202008022329103_UpdateDb6.cs" />
+    <Compile Include="Migrations\202008022329103_UpdateDb6.designer.cs">
+      <DependentUpon>202008022329103_UpdateDb6.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FoodViewModels.cs" />
     <Compile Include="Logic\LocationLogic.cs" />
@@ -1579,8 +1579,8 @@
     <EmbeddedResource Include="Migrations\202007101617005_UpdateDb5.resx">
       <DependentUpon>202007101617005_UpdateDb5.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007152039404_UpdateDb6.resx">
-      <DependentUpon>202007152039404_UpdateDb6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202008022329103_UpdateDb6.resx">
+      <DependentUpon>202008022329103_UpdateDb6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

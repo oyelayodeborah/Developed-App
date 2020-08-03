@@ -29,11 +29,23 @@ namespace KABE_Food_Ordering_System.Logic
             var findDetails = _context.Foods.Where(a => a.Name.ToLower().Trim() == value.ToLower().Trim()).SingleOrDefault();
             return findDetails;
         }
-        //public Food FindByRestaurant(int value)
-        //{
-        //    var findDetails = _context.Foods.Where(a => a.Restaurants.ContainsKey(value)).SingleOrDefault();
-        //    return findDetails;
-        //}
+        public List<int> GetAllFoodId()
+        {
+            var getFood = _context.Foods.ToList();
+            var getAll = new List<int>();
+            if (getFood.Count() != 0)
+            {
+                foreach (var item in getFood)
+                {
+                    getAll.Add(item.Id);
+                }
+            }
+            else
+            {
+                getAll = new List<int>();
+            }
+            return getAll;
+        }
 
         //Checks if the new food about to be created already exist in the database
         public bool IsDetailsExist(string value)
@@ -65,9 +77,6 @@ namespace KABE_Food_Ordering_System.Logic
             }
         }
 
-        //public IEnumerable<T> SearchOrder(string food, string restaurant, string location)
-        //{
-
-        //}
+       
     }
 }

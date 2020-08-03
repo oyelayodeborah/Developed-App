@@ -26,7 +26,34 @@ namespace KABE_Food_Ordering_System.Controllers
         {
             int id = Convert.ToInt32(Session["id"]);
             User user = new UserLogic().Get(id);
-            var getRecommendedFood = customerLogic.SetRecommendedFood(id, user.LastLoggedIn);
+            var getRecommendedFood = new List<Food>();
+            var getRecommendedFoodOne = new CustomerLogic().SetRecommendedFoodOne(id, user.LastLoggedIn);
+            if (getRecommendedFoodOne != null)
+            {
+                var getRecommendedFoodTwo = new CustomerLogic().SetRecommendedFoodTwo(id, user.LastLoggedIn);
+                var getRecommendedFoodThree = new CustomerLogic().SetRecommendedFoodThree(id, user.LastLoggedIn);
+                getRecommendedFood.Add(new Food
+                {
+                    Id = getRecommendedFoodOne.Id,
+                    Image = getRecommendedFoodOne.Image,
+                    ContentType = getRecommendedFoodOne.ContentType,
+                    Name = getRecommendedFoodOne.Name
+                });
+                getRecommendedFood.Add(new Food
+                {
+                    Id = getRecommendedFoodTwo.Id,
+                    Image = getRecommendedFoodTwo.Image,
+                    ContentType = getRecommendedFoodTwo.ContentType,
+                    Name = getRecommendedFoodTwo.Name
+                });
+                getRecommendedFood.Add(new Food
+                {
+                    Id = getRecommendedFoodThree.Id,
+                    Image = getRecommendedFoodThree.Image,
+                    ContentType = getRecommendedFoodThree.ContentType,
+                    Name = getRecommendedFoodThree.Name
+                });
+            }
             if (getRecommendedFood.Count() == 0)
             {
                 ViewBag.Results = null;

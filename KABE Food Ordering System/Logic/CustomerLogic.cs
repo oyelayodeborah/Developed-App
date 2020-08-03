@@ -12,11 +12,143 @@ namespace KABE_Food_Ordering_System.Logic
         ApplicationDbContext _context = new ApplicationDbContext();
         public BaseLogic<Customer> Repo = new BaseLogic<Customer>(new ApplicationDbContext());
         public BaseLogic<Food> foodLogic = new BaseLogic<Food>(new ApplicationDbContext());
+        
+        public Food SetRecommendedFoodOne(int id, DateTime lastLoggedIn)
+        {
+            var getcust = GetByUserID(id);
+            var retrieveRecommendedFoodOne = new Food();
+            IEnumerable<string> getFoodAllergies = null;
+
+            if (getcust.RecommendedFoodOne!=null && lastLoggedIn.Date == DateTime.Now.Date)
+            {
+                retrieveRecommendedFoodOne = new FoodLogic().Get(Convert.ToInt32(getcust.RecommendedFoodOne));
+            }
+            else
+            {
+                var getAllFoodId = new FoodLogic().GetAllFoodId();
+                var FoodAllergies = new List<int>();
+                var getAll = _context.Foods.ToList();
+                var varIndex = 0;
+                var getAllergicFood = new Food();
+                Random rand = new Random();
+                varIndex = rand.Next(getAllFoodId.Count());
+                retrieveRecommendedFoodOne = new FoodLogic().Get(getAllFoodId[varIndex]);
+                getFoodAllergies = from allergies in getcust.FoodAllergies.Split(',')
+                                   select Convert.ToString(allergies);
+                var containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodOne.Name);
+                do
+                {
+                    varIndex = rand.Next(getAllFoodId.Count());
+                    retrieveRecommendedFoodOne = new FoodLogic().Get(getAllFoodId[varIndex]);
+                    containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodOne.Name);
+                } while (containsfood==true);
+                getcust.RecommendedFoodOne = retrieveRecommendedFoodOne.Id.ToString();
+                Repo.Update(getcust);
+
+            }
+            return retrieveRecommendedFoodOne;
+
+        }
+
+        public Food SetRecommendedFoodTwo(int id, DateTime lastLoggedIn)
+        {
+            var getcust = GetByUserID(id);
+            var retrieveRecommendedFoodTwo = new Food();
+            IEnumerable<string> getFoodAllergies = null;
+
+            if (getcust.RecommendedFoodTwo != null && lastLoggedIn.Date == DateTime.Now.Date)
+            {
+                retrieveRecommendedFoodTwo = new FoodLogic().Get(Convert.ToInt32(getcust.RecommendedFoodTwo));
+            }
+            else
+            {
+                var getAllFoodId = new FoodLogic().GetAllFoodId();
+                var retrieveRecommendedFoodOne = Convert.ToInt32(getcust.RecommendedFoodOne);
+                if (getAllFoodId != null)
+                {
+                    getAllFoodId.Remove(retrieveRecommendedFoodOne);
+                    var FoodAllergies = new List<int>();
+                    var getAll = _context.Foods.ToList();
+                    var varIndex = 0;
+                    var getAllergicFood = new Food();
+                    Random rand = new Random();
+                    varIndex = rand.Next(getAllFoodId.Count());
+                    retrieveRecommendedFoodTwo = new FoodLogic().Get(getAllFoodId[varIndex]);
+                    getFoodAllergies = from allergies in getcust.FoodAllergies.Split(',')
+                                       select Convert.ToString(allergies);
+                    var containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodTwo.Name);
+
+                    do
+                    {
+                        varIndex = rand.Next(getAllFoodId.Count());
+                        retrieveRecommendedFoodTwo = new FoodLogic().Get(getAllFoodId[varIndex]);
+                        containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodTwo.Name);
+                    } while (containsfood == true || retrieveRecommendedFoodTwo.Id==retrieveRecommendedFoodOne);
+                    getcust.RecommendedFoodTwo = retrieveRecommendedFoodTwo.Id.ToString();
+                    Repo.Update(getcust);
+
+                }
+            }
+            return retrieveRecommendedFoodTwo;
+
+        }
+
+        public Food SetRecommendedFoodThree(int id, DateTime lastLoggedIn)
+        {
+            var getcust = GetByUserID(id);
+            var retrieveRecommendedFoodThree = new Food();
+            IEnumerable<string> getFoodAllergies = null;
+
+            if (getcust.RecommendedFoodThree != null && lastLoggedIn.Date == DateTime.Now.Date)
+            {
+                retrieveRecommendedFoodThree = new FoodLogic().Get(Convert.ToInt32(getcust.RecommendedFoodThree));
+            }
+            else
+            {
+                var getAllFoodId = new FoodLogic().GetAllFoodId();
+                var retrieveRecommendedFoodTwo = Convert.ToInt32(getcust.RecommendedFoodTwo);
+                var retrieveRecommendedFoodOne = Convert.ToInt32(getcust.RecommendedFoodOne);
+
+                if (getAllFoodId != null)
+                {
+                    getAllFoodId.Remove(Convert.ToInt32(getcust.RecommendedFoodOne));
+                    var FoodAllergies = new List<int>();
+                    var getAll = _context.Foods.ToList();
+                    var varIndex = 0;
+                    var getAllergicFood = new Food();
+                    Random rand = new Random();
+                    varIndex = rand.Next(getAllFoodId.Count());
+                    if (getAllFoodId.Count > 2)
+                    {
+                        retrieveRecommendedFoodThree = new FoodLogic().Get(getAllFoodId[varIndex]);
+                        getFoodAllergies = from allergies in getcust.FoodAllergies.Split(',')
+                                           select Convert.ToString(allergies);
+                        var containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodThree.Name);
+                        do
+                        {
+                            varIndex = rand.Next(getAllFoodId.Count());
+                            retrieveRecommendedFoodThree = new FoodLogic().Get(getAllFoodId[varIndex]);
+                            containsfood = getcust.FoodAllergies.Contains(retrieveRecommendedFoodThree.Name);
+                        } while (containsfood == true || retrieveRecommendedFoodThree.Id == retrieveRecommendedFoodTwo || retrieveRecommendedFoodThree.Id == retrieveRecommendedFoodOne);
+                    }
+                    else { 
+                        retrieveRecommendedFoodThree = new FoodLogic().Get(retrieveRecommendedFoodOne);
+                    }
+                    getcust.RecommendedFoodThree = retrieveRecommendedFoodThree.Id.ToString();
+                    Repo.Update(getcust);
+
+                }
+            }
+            return retrieveRecommendedFoodThree;
+
+        }
+
 
         public IEnumerable<Customer> GetAll()
         {
             return Repo.GetAll();
         }
+
 
         public List<Food> SetRecommendedFood(int id, DateTime lastLoggedIn)
         {

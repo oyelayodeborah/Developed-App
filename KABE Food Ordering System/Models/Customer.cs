@@ -70,6 +70,15 @@ namespace KABE_Food_Ordering_System.Models
         //[Required]
         [Display(Name ="Recommended Food")]
         public string RecommendedFood { get; set; }
+        //[Required]
+        [Display(Name ="Recommended Food")]
+        public string RecommendedFoodOne { get; set; }
+        //[Required]
+        [Display(Name ="Recommended Food")]
+        public string RecommendedFoodTwo { get; set; }
+        //Required
+        [Display(Name ="Recommended Food")]
+        public string RecommendedFoodThree { get; set; }
 
         //[Required]
         [Display(Name="Job/Occupation")]

@@ -16,107 +16,107 @@
         @Html.HiddenFor(model => model.Amount)
         @Html.HiddenFor(model => model.VerificationCode)
 
-    <div class="col-md-6">
-        @if (ViewBag.Message != null)
-        {
-            if (ViewBag.Message == "Success")
+        <div class="col-md-6">
+            @if (ViewBag.Message != null)
             {
-                <div class="alert alert-success">
-                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
+                if (ViewBag.Message == "Success")
+                {
+                    <div class="alert alert-success">
+                        <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-                </div>
-
-            }
-            else if (ViewBag.Message == "Exist")
-            {
-                <div class="alert alert-error">
-                    <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
-
-                </div>
-
-            }
-            else if (ViewBag.Message == "Error")
-            {
-                <div class="alert alert-error">
-                    <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
-
-                </div>
-
-            }
-            else if (ViewBag.Message == "Expiry")
-            {
-                <div class="alert alert-error">
-                    <p>Your card can not be used to complete this transaction.  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
-
-                </div>
-
-            }
-        }
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @if (ViewBag.Data != null)
-        {
-            var item = ViewBag.Data;
-
-            <div class="form-group">
-                @{
-
-                    var getImage = item.Image;
-                    <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:150px; height:75px;" />
+                    </div>
 
                 }
-            </div>
-            <div class="form-group">
-                <h3> <strong>@item.Name</strong></h3>
+                else if (ViewBag.Message == "Exist")
+                {
+                    <div class="alert alert-error">
+                        <p>Role Name Exist <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-            </div>
-            <div class="form-group">
-                <h4><strong>@item.RestaurantName</strong></h4>
-            </div>
-            <div class="form-group">
+                    </div>
 
-                <h4><strong id="Price"> Price: N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</strong></h4>
-            </div>
+                }
+                else if (ViewBag.Message == "Error")
+                {
+                    <div class="alert alert-error">
+                        <p>@ViewBag.Message <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-        }
-        <div class="form-group ">
-            @Html.LabelFor(m => m.FoodQuantity)
-            @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, max = 200, min = 1, required = "required", pattern = "\\d+$", @readonly = "readonly" })
-            @Html.ValidationMessageFor(model => model.FoodQuantity, "", new { @class = "text-danger" })
+                    </div>
 
-        </div>
-        <div class="form-group ">
-            @Html.LabelFor(m => m.ResidentialAddress)
-            @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, @readonly = "readonly", required = "required" })
-            @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+                }
+                else if (ViewBag.Message == "Expiry")
+                {
+                    <div class="alert alert-error">
+                        <p>Your card can not be used to complete this transaction.  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> </p>
 
-        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LocationId)
-            @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", @disabled = "disabled", required = "required", @data_live_search = "true" })
-            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            <h4>
-                <strong id="Total">
+                }
+            }
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @if (ViewBag.Data != null)
+            {
+                var item = ViewBag.Data;
+
+                <div class="form-group">
                     @{
-                        amount = Convert.ToDecimal(Model.Amount);
+
+                        var getImage = item.Image;
+                        <img src="data:@item.ContentType;base64,@getImage" alt="@item.Name" style="width:150px; height:75px;" />
+
                     }
-                    Total: N @amount.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
-                </strong>
-            </h4>
-        </div>
-        <div class="form-group">
-            <span id="error" style="color:red;"></span>
+                </div>
+                <div class="form-group">
+                    <h3> <strong>@item.Name</strong></h3>
 
-            <div class="col-md-offset-2 col-md-10">
+                </div>
+                <div class="form-group">
+                    <h4><strong>@item.RestaurantName</strong></h4>
+                </div>
+                <div class="form-group">
 
-                <input type="submit" value="PAY FOR FOOD" class="btn" id="payfood" onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" style="background-color: #333" />&emsp;&emsp;
+                    <h4><strong id="Price"> Price: N @Math.Round(item.Price, 2).ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</strong></h4>
+                </div>
+
+            }
+            <div class="form-group ">
+                @Html.LabelFor(m => m.FoodQuantity)
+                @Html.TextBoxFor(m => m.FoodQuantity, new { @class = "form-control", maxlength = 4, minlength = 1, max = 200, min = 1, required = "required", pattern = "\\d+$", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.FoodQuantity, "", new { @class = "text-danger" })
 
             </div>
+            <div class="form-group ">
+                @Html.LabelFor(m => m.ResidentialAddress)
+                @Html.TextBoxFor(m => m.ResidentialAddress, new { @class = "form-control", maxlength = 225, minlength = 3, @readonly = "readonly", required = "required" })
+                @Html.ValidationMessageFor(model => model.ResidentialAddress, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationId)
+                @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.Locations, "Id", "Name"), "Choose an Option", new { @class = "form-control", @disabled = "disabled", required = "required", @data_live_search = "true" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <h4>
+                    <strong id="Total">
+                        @{
+                            amount = Convert.ToDecimal(Model.Amount);
+                        }
+                        Total: N @amount.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                    </strong>
+                </h4>
+            </div>
+            <div class="form-group">
+                <span id="error" style="color:red;"></span>
+
+                <div class="col-md-offset-2 col-md-10">
+
+                    <input type="submit" value="PAY FOR FOOD" class="btn" id="payfood" onmouseover="this.style.color = '#333', this.style.background='#ddd'" onmouseout="this.style.color = '#ddd', this.style.background='#333'" style="background-color: #333" />&emsp;&emsp;
+
+                </div>
+            </div>
         </div>
-    </div>
     }
 </div>
 
@@ -309,7 +309,7 @@
                 $('#error').html();
             }
         });
-        $('#paynow').click(function (e) {
+        @*$('#paynow').click(function (e) {
             var vefCode = $('#verfCode').val();
             var actualvefCode = @ViewBag.VefriCode;
             var monthSelected = $(this).val();
@@ -338,7 +338,7 @@
                 $('#error').html();
             }
             //}
-        });
+        });*@
         var multiply = 0;
         var price = $('#Amount').val();
         var total = $('#Total').val();

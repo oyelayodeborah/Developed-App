@@ -126,7 +126,8 @@ namespace KABE_Food_Ordering_System.Controllers
                 ViewBag.Data = foodViewModels;
                 order.CustomerId = Convert.ToInt32(Session["id"]);
                 order.FoodId = foodId;
-                order.VerificationCode = GenerateVerfCode();
+                //order.VerificationCode = GenerateVerfCode();
+                order.VerificationCode = "000000";
                 ViewBag.VefriCode = order.VerificationCode;
                 order.Amount = Convert.ToString(price);
                 order.RestaurantId = new RestaurantLogic().FindByName(foodViewModels.RestaurantName).Id;
@@ -151,7 +152,6 @@ namespace KABE_Food_Ordering_System.Controllers
                 order.DeliveryDateTime = DateTime.Now;
                 order.OrderDateTime = DateTime.Now;
                 order.Status = OrderStatus.NotPaid;
-                //order.VerificationCode = GenerateVerfCode();
                 var email = Session["email"].ToString();
                 var name = Session["username"].ToString();
                 new AccountLogic().SendingVerificationCode(email, name, order.VerificationCode);
@@ -163,7 +163,6 @@ namespace KABE_Food_Ordering_System.Controllers
                 Session["NewOrderId"] = order.Id;
                 ViewBag.Amount = order.Amount;
                 ViewBag.VefriCode = order.VerificationCode;
-                //return View("Payment");
                 ViewBag.Msg = 2;
                 return View(order);
             }
@@ -239,25 +238,7 @@ namespace KABE_Food_Ordering_System.Controllers
 
             return View();
         }
-        //// GET: Order/Payment
-        //[HttpGet]
-        //[OrderProcessing]
-        //[CustomerRestrictLogic]
-        //public ActionResult Payment()
-        //{
-        //    int id= Convert.ToInt32(Session["NewOrderId"]);
-        //    Order order = new OrderLogic().Get(id);
-        //    ViewBag.Amount = order.Amount;
-        //    if (order.Status == OrderStatus.NotPaid)
-        //    {
-        //        return View(order);
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Search");
-        //    }
-
-        //}
+       
 
         [HttpPost]
         [OrderProcessing]
