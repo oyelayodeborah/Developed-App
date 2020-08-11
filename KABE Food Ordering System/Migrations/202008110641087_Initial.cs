@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialModel : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -23,6 +23,9 @@
                         PhoneNumber = c.String(nullable: false, maxLength: 11),
                         FoodAllergies = c.String(),
                         RecommendedFood = c.String(),
+                        RecommendedFoodOne = c.String(),
+                        RecommendedFoodTwo = c.String(),
+                        RecommendedFoodThree = c.String(),
                         Occupation = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -88,9 +91,12 @@
                         CustomerId = c.Int(nullable: false),
                         RestaurantId = c.Int(nullable: false),
                         Amount = c.String(nullable: false),
+                        ResidentialAddress = c.String(nullable: false),
+                        VerificationCode = c.String(nullable: false),
                         FoodQuantity = c.Int(nullable: false),
                         LocationId = c.Int(nullable: false),
-                        TransactionReference = c.String(nullable: false, maxLength: 40),
+                        TransactionReference = c.String(nullable: false),
+                        CardNumber = c.String(nullable: false),
                         FoodId = c.Int(nullable: false),
                         OrderDateTime = c.DateTime(nullable: false),
                         DeliveryDateTime = c.DateTime(nullable: false),
@@ -119,6 +125,10 @@
                         Email = c.String(nullable: false, maxLength: 225),
                         EstablishmentDate = c.DateTime(nullable: false),
                         About = c.String(),
+                        SmallThumbnailjpg = c.String(),
+                        SmallThumbnailpng = c.String(),
+                        FoodId = c.String(),
+                        Price = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Locations", t => t.LocationId, cascadeDelete: false)

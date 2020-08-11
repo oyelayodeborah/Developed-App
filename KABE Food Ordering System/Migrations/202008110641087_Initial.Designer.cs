@@ -7,13 +7,13 @@ namespace KABE_Food_Ordering_System.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class UpdateDb6 : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateDb6));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008022329103_UpdateDb6"; }
+            get { return "202008110641087_Initial"; }
         }
         
         string IMigrationMetadata.Source

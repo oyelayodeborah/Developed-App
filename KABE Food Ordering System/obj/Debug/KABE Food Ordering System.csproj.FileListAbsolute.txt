@@ -89,12 +89,7 @@ C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering Sys
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\bin\EntityFramework.xml
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\bin\EntityFramework.SqlServer.xml
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\bin\ajax-data-table.dll
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.InitialModel.resources
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE Food Ordering System.csproj.GenerateResource.cache
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE Food Ordering System.csprojAssemblyReference.cache
 C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\bin\NinjaNye.SearchExtensions.dll
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb1.resources
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb2.resources
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb4.resources
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb5.resources
-C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.UpdateDb6.resources
+C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE_Food_Ordering_System.Migrations.Initial.resources
+C:\Users\OYELAYO\Desktop\Onyeka\KABE Food Ordering System\KABE Food Ordering System\obj\Debug\KABE Food Ordering System.csproj.GenerateResource.cache
